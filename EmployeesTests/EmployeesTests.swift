@@ -3,7 +3,7 @@
 //  EmployeesTests
 //
 //  Created by Olga Kliushkina on 27.05.2020.
-//  Copyright © 2020 Olga Klyushkina. All rights reserved.
+//  Copyright © 2020 Olga Kliushkina. All rights reserved.
 //
 
 import XCTest
