@@ -8,24 +8,38 @@
 
 import Foundation
 
-struct GeneralErrorConstants {
+struct Constants {
     
     static let closeButton = "OK"
-    static let title = "Error Occured"
-    static let message = "Something went wrong. Please try again later."
+    static let cancel = "Cancel"
     
 }
 
-struct EmployeesListConstants {
+struct AlertConstants {
+
+    static let title = "Error Occured"
+    static let message = "Something went wrong. Please try again later."
+    
+    static let settingsTitle = "Go to Settings"
+    
+    static let contactsTitle = "Permission to Contacts"
+    static let contactsDescription = "This app needs access to contacts in order to ..."
+    
+}
+
+struct EmployeesConstants {
     
     static let tableViewPlaceholderText = "There are no employees yet. Swipe down to refresh the list."
     static let refreshControlText = "The list is being refreshed."
     
 }
 
-struct EmployeeDetailsConstants {
+struct DetailsConstants {
     
     static let projectsPlaceholder = "This employee doesn't have any projects."
     static let projects = "Projects: "
+    static let phonePlaceholder = "This employee doesn't have a phone number."
+    
+    static let more = "More"
     
 }

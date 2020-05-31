@@ -8,6 +8,8 @@
 
 import Foundation
 import UIKit
+import Contacts
+import ContactsUI
 
 final class EmployeesListViewController: UIViewController {
     
@@ -25,6 +27,7 @@ final class EmployeesListViewController: UIViewController {
         addRefreshControl()
         showPlaceholderOrEmployeesTable()
         setUpActivityIndicator()
+        setUpLocalContactsCallback() 
         
         self.employeesTableView.delegate = self
         self.employeesTableView.dataSource = self
@@ -32,9 +35,12 @@ final class EmployeesListViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        guard let navigationController = self.navigationController else { return }
+        
+        guard let navigationController = self.navigationController, let viewModel = self.viewModel else { return }
         
         navigationController.setNavigationBarHidden(true, animated: animated)
+        
+        viewModel.fetchDeviceContacts()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,7 +63,7 @@ extension EmployeesListViewController {
             sself.stopSpinnersAnimation()
             
             DispatchQueue.main.async {
-                sself.showAlert(title: GeneralErrorConstants.title, message: GeneralErrorConstants.message, buttonLabel: GeneralErrorConstants.closeButton)
+                sself.showDefaultAlert(title: AlertConstants.title, message: AlertConstants.message, buttonLabel: Constants.closeButton)
             }
         }
         
@@ -86,7 +92,7 @@ extension EmployeesListViewController {
     }
     
     func showPlaceholderProgramatically() {
-        self.employeesTableView.showPlaceholder(message: EmployeesListConstants.tableViewPlaceholderText)
+        self.employeesTableView.showPlaceholder(message: EmployeesConstants.tableViewPlaceholderText)
     }
     
     private func addRefreshControl() {
@@ -94,7 +100,7 @@ extension EmployeesListViewController {
         
         guard let refreshControl = self.refreshControl else { return }
         
-        refreshControl.attributedTitle = NSAttributedString(string: EmployeesListConstants.refreshControlText)
+        refreshControl.attributedTitle = NSAttributedString(string: EmployeesConstants.refreshControlText)
         refreshControl.addTarget(self, action: #selector(self.refreshList(_:)), for: .valueChanged)
         self.employeesTableView.addSubview(refreshControl)
     }
@@ -142,13 +148,30 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
+        var cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
+
+        if cell == nil {
+            tableView.register(UINib(nibName: EmployeeCell.nibName, bundle: nil), forCellReuseIdentifier: EmployeeCell.identifier)
+            cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
+          }
         
-        if let viewModel = self.viewModel, let employees = viewModel.employeesWithPosition(positionSection: indexPath.section) {
-            cell.textLabel?.text = ("\(employees[indexPath.row].name) \(employees[indexPath.row].surname)")
+        guard let viewModel = self.viewModel, let employeeCell = cell,
+            let employees = viewModel.employeesWithPosition(positionSection: indexPath.section) else {
+                return UITableViewCell()
         }
         
-        return cell
+        let employee = employees[indexPath.row]
+        let employeeFullName = "\(employee.name) \(employee.surname)"
+
+        employeeCell.buttonTapped = {
+            self.openDeviceContact(with: employeeFullName)
+        }
+            employeeCell.nameSurnameLabel.text = employeeFullName
+            employeeCell.openDeviceContactsButton.setTitle(DetailsConstants.more, for: .normal)
+            employeeCell.openDeviceContactsButton.isHidden = !viewModel.employeeIsInDeviceContacts(employee: employees[indexPath.row])
+        print ("DEVICE CONTACTS: \(String(describing: viewModel.deviceContactsNames))")
+            
+            return employeeCell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -169,6 +192,25 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         guard let viewModel = self.viewModel, let projects = viewModel.positions else { return  nil }
         
         return projects[section]
+    }
+    
+}
+
+extension EmployeesListViewController {
+    
+    func setUpLocalContactsCallback() {
+        guard var viewModel = self.viewModel else { return }
+        
+        viewModel.showContactsAlert = {
+            self.showContactsSettingsAlert()
+        }
+    }
+    
+    private func openDeviceContact(with fullName: String) {
+        guard let viewModel = self.viewModel, let navigationController = self.navigationController, let contact = viewModel.deviceContact(fullName: fullName) else { return }
+        
+        let contactVC = CNContactViewController(for: contact)
+        navigationController.pushViewController(contactVC, animated: true)
     }
     
 }

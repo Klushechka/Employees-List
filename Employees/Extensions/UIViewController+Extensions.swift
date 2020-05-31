@@ -11,11 +11,23 @@ import UIKit
 
 extension UIViewController {
     
-    func showAlert(title: String, message: String, buttonLabel: String) {
+    func showDefaultAlert(title: String, message: String, buttonLabel: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: buttonLabel, style: .default, handler: nil))
         
-        self.present(alert, animated: true, completion: nil)
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func showContactsSettingsAlert() {
+        let alert = UIAlertController(title: AlertConstants.contactsTitle, message: AlertConstants.contactsDescription, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
+            let url = URL(string: UIApplication.openSettingsURLString)!
+            UIApplication.shared.open(url)
+        })
+        
+        alert.addAction(UIAlertAction(title: Constants.cancel, style: .cancel))
+        
+        present(alert, animated: true)
     }
     
 }

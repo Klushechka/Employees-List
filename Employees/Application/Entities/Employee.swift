@@ -18,7 +18,7 @@ struct Employee: Codable {
     
     var name: String
     var surname: String
-    var contactDetails: ContactDetails?
+    var contactDetails: ContactDetails
     var position: String
     var projects: [String]?
     
@@ -35,7 +35,7 @@ struct Employee: Codable {
         
         self.name = try container.decode(String.self, forKey: .name)
         self.surname = try container.decode(String.self, forKey: .surname)
-        self.contactDetails = try container.decodeIfPresent(ContactDetails.self, forKey: .contactDetails)
+        self.contactDetails = try container.decode(ContactDetails.self, forKey: .contactDetails)
         self.position = try container.decode(String.self, forKey: .position)
         self.projects = try container.decodeIfPresent([String].self, forKey: .projects)
     }
@@ -45,7 +45,7 @@ struct Employee: Codable {
         
         try container.encode(self.name, forKey: .name)
         try container.encode(self.surname, forKey: .surname)
-        try container.encodeIfPresent(self.contactDetails, forKey: .contactDetails)
+        try container.encode(self.contactDetails, forKey: .contactDetails)
         try container.encode(self.position, forKey: .position)
         try container.encodeIfPresent(self.projects, forKey: .projects)
     }

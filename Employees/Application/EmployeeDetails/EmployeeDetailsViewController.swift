@@ -29,19 +29,42 @@ final class EmployeeDetailsViewController: UIViewController {
         
         self.nameAndSurnameLabel.text = String("\(viewModel.employee.name) \(viewModel.employee.surname)").uppercased()
         self.positionLabel.text = viewModel.employee.position
+        self.emailLabel.text = viewModel.employee.contactDetails.email
         
-        if let contactDetails =  viewModel.employee.contactDetails {
-            self.phoneLabel.text = contactDetails.phone
-            self.emailLabel.text = contactDetails.email
-        }
+        setupOptionalLabels()
+    }
+    
+    func setupOptionalLabels() {
+        setUpProjectsLabel()
+        setUpPhoneLabel()
+    }
+    
+    private func setUpProjectsLabel() {
+        guard let viewModel = self.viewModel else { return }
         
         if let projects = viewModel.employee.projects {
-            self.projectsLabel.text = "\(EmployeeDetailsConstants.projects) \(projects.joined(separator: ", "))"
+            self.projectsLabel.text = "\(DetailsConstants.projects) \(projects.joined(separator: ", "))"
         }
         else {
-            self.projectsLabel.text = EmployeeDetailsConstants.projectsPlaceholder
+            self.projectsLabel.text = DetailsConstants.projectsPlaceholder
             self.projectsLabel.textColor = .lightGray
         }
     }
+    
+    private func setUpPhoneLabel() {
+        guard let viewModel = self.viewModel else { return }
+        
+        if let phoneNumber = viewModel.employee.contactDetails.phone {
+            self.phoneLabel.text = phoneNumber
+        }
+        else {
+            self.phoneLabel.text = DetailsConstants.phonePlaceholder
+            
+            self.phoneLabel.textColor = .lightGray
+            
+        }
+    }
+    
+    
     
 }

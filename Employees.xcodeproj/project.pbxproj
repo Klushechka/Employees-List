@@ -37,6 +37,9 @@
 		69CF07312482ECD4002BA691 /* EmployeeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07302482ECD4002BA691 /* EmployeeDetailsViewController.swift */; };
 		69CF07332483C555002BA691 /* EmployeeDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07322483C555002BA691 /* EmployeeDetailsViewModel.swift */; };
 		69CF07352483C561002BA691 /* EmployeeDetailsViewModelImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07342483C561002BA691 /* EmployeeDetailsViewModelImpl.swift */; };
+		69CF07382483FCE8002BA691 /* LocalContactsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07372483FCE8002BA691 /* LocalContactsService.swift */; };
+		69CF07412484357F002BA691 /* EmployeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF073F2484357F002BA691 /* EmployeeCell.swift */; };
+		69CF07422484357F002BA691 /* EmployeeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69CF07402484357F002BA691 /* EmployeeCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -84,6 +87,9 @@
 		69CF07302482ECD4002BA691 /* EmployeeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsViewController.swift; sourceTree = "<group>"; };
 		69CF07322483C555002BA691 /* EmployeeDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsViewModel.swift; sourceTree = "<group>"; };
 		69CF07342483C561002BA691 /* EmployeeDetailsViewModelImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsViewModelImpl.swift; sourceTree = "<group>"; };
+		69CF07372483FCE8002BA691 /* LocalContactsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalContactsService.swift; sourceTree = "<group>"; };
+		69CF073F2484357F002BA691 /* EmployeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCell.swift; sourceTree = "<group>"; };
+		69CF07402484357F002BA691 /* EmployeeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmployeeCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -125,20 +131,13 @@
 		69533E56247E58C7001AC751 /* Employees */ = {
 			isa = PBXGroup;
 			children = (
-				69533E94247EADFC001AC751 /* List Of Employees */,
-				69CF072D2482ECB4002BA691 /* EmployeeDetails */,
-				69533E7E247E6D7B001AC751 /* Networking */,
-				69CF072A2482BD20002BA691 /* Storage */,
+				69CF073B248420E4002BA691 /* Application */,
 				69B7AACF2481464600716B77 /* Factories */,
 				69B7AADC24817EA100716B77 /* Common Constants */,
-				69533E79247E59B5001AC751 /* Entities */,
 				69533EA8247FB555001AC751 /* Utils */,
 				69533EAD247FE449001AC751 /* Extensions */,
-				69533E57247E58C7001AC751 /* AppDelegate.swift */,
-				69533E59247E58C7001AC751 /* SceneDelegate.swift */,
-				69533E60247E58CA001AC751 /* Assets.xcassets */,
-				69533E62247E58CA001AC751 /* LaunchScreen.storyboard */,
-				69533E65247E58CA001AC751 /* Info.plist */,
+				69CF0739248420B2002BA691 /* Supporting Files */,
+				69CF073A248420B9002BA691 /* Resources */,
 			);
 			path = Employees;
 			sourceTree = "<group>";
@@ -196,6 +195,7 @@
 		69533E94247EADFC001AC751 /* List Of Employees */ = {
 			isa = PBXGroup;
 			children = (
+				69CF073E24843557002BA691 /* EmployeeCell */,
 				69533E95247EAE1C001AC751 /* EmployeesListViewController.storyboard */,
 				69533E99247EB02D001AC751 /* EmployeesListViewController.swift */,
 				69533E9D247ED2C9001AC751 /* EmployeesListViewModelImpl.swift */,
@@ -262,6 +262,55 @@
 				69CF07322483C555002BA691 /* EmployeeDetailsViewModel.swift */,
 			);
 			path = EmployeeDetails;
+			sourceTree = "<group>";
+		};
+		69CF07362483F65B002BA691 /* Local Contacts Service */ = {
+			isa = PBXGroup;
+			children = (
+				69CF07372483FCE8002BA691 /* LocalContactsService.swift */,
+			);
+			path = "Local Contacts Service";
+			sourceTree = "<group>";
+		};
+		69CF0739248420B2002BA691 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				69533E57247E58C7001AC751 /* AppDelegate.swift */,
+				69533E59247E58C7001AC751 /* SceneDelegate.swift */,
+				69533E65247E58CA001AC751 /* Info.plist */,
+			);
+			path = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		69CF073A248420B9002BA691 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				69533E60247E58CA001AC751 /* Assets.xcassets */,
+				69533E62247E58CA001AC751 /* LaunchScreen.storyboard */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		69CF073B248420E4002BA691 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				69533E94247EADFC001AC751 /* List Of Employees */,
+				69CF072D2482ECB4002BA691 /* EmployeeDetails */,
+				69533E7E247E6D7B001AC751 /* Networking */,
+				69533E79247E59B5001AC751 /* Entities */,
+				69CF07362483F65B002BA691 /* Local Contacts Service */,
+				69CF072A2482BD20002BA691 /* Storage */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		69CF073E24843557002BA691 /* EmployeeCell */ = {
+			isa = PBXGroup;
+			children = (
+				69CF073F2484357F002BA691 /* EmployeeCell.swift */,
+				69CF07402484357F002BA691 /* EmployeeCell.xib */,
+			);
+			path = EmployeeCell;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -346,6 +395,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				69CF072F2482ECC7002BA691 /* EmployeeDetailsViewController.storyboard in Resources */,
+				69CF07422484357F002BA691 /* EmployeeCell.xib in Resources */,
 				69533E64247E58CA001AC751 /* LaunchScreen.storyboard in Resources */,
 				69533E61247E58CA001AC751 /* Assets.xcassets in Resources */,
 				69533E96247EAE1D001AC751 /* EmployeesListViewController.storyboard in Resources */,
@@ -371,11 +421,13 @@
 				69533E8E247E85DE001AC751 /* ResponseHandler.swift in Sources */,
 				69CF07332483C555002BA691 /* EmployeeDetailsViewModel.swift in Sources */,
 				69533E8B247E7A73001AC751 /* NetworkServiceImpl.swift in Sources */,
+				69CF07412484357F002BA691 /* EmployeeCell.swift in Sources */,
 				69533E7D247E6D61001AC751 /* ContactDetails.swift in Sources */,
 				69533E80247E6EC4001AC751 /* Endpoint.swift in Sources */,
 				69B7AAD924817BB300716B77 /* UIViewController+Extensions.swift in Sources */,
 				69533EAC247FCF4A001AC751 /* UITableVIew+Extension.swift in Sources */,
 				69533EA2247EF00F001AC751 /* EmployeesOperation.swift in Sources */,
+				69CF07382483FCE8002BA691 /* LocalContactsService.swift in Sources */,
 				69533E7B247E59C4001AC751 /* Employee.swift in Sources */,
 				69533E88247E7605001AC751 /* NetworkService.swift in Sources */,
 				69533EB1248057DC001AC751 /* DataOperation.swift in Sources */,
@@ -544,7 +596,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PTT8AW7PPX;
-				INFOPLIST_FILE = Employees/Info.plist;
+				INFOPLIST_FILE = "Employees/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -562,7 +614,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = PTT8AW7PPX;
-				INFOPLIST_FILE = Employees/Info.plist;
+				INFOPLIST_FILE = "Employees/Supporting Files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
