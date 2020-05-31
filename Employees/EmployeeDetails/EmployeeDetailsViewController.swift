@@ -27,7 +27,7 @@ final class EmployeeDetailsViewController: UIViewController {
     private func setUpLabels() {
         guard let viewModel = self.viewModel else { return }
         
-        self.nameAndSurnameLabel.text = String("\(viewModel.employee.name) \(viewModel.employee.surname)")
+        self.nameAndSurnameLabel.text = String("\(viewModel.employee.name) \(viewModel.employee.surname)").uppercased()
         self.positionLabel.text = viewModel.employee.position
         
         if let contactDetails =  viewModel.employee.contactDetails {
@@ -36,7 +36,11 @@ final class EmployeeDetailsViewController: UIViewController {
         }
         
         if let projects = viewModel.employee.projects {
-            self.projectsLabel.text = "Projects: \(projects.joined(separator: ", "))"
+            self.projectsLabel.text = "\(EmployeeDetailsConstants.projects) \(projects.joined(separator: ", "))"
+        }
+        else {
+            self.projectsLabel.text = EmployeeDetailsConstants.projectsPlaceholder
+            self.projectsLabel.textColor = .lightGray
         }
     }
     

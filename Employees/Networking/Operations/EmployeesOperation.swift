@@ -42,8 +42,6 @@ class EmployeesOperation: DataOperation {
                 if let response = result.response as? HTTPURLResponse, response.statusCode == 200, let data = result.data, let decodedData = sself.decode(data: data) {
                     decodedEmployees.append(contentsOf: decodedData)
                     requestSucceeded = true
-                    
-                    self?.dataStorageManager.saveData(data, fileName: .employees)
                 }
                 else if let response = result.response as? HTTPURLResponse, response.statusCode != 200 {
                     requestSucceeded = false
@@ -56,9 +54,10 @@ class EmployeesOperation: DataOperation {
             
             let errorToSend = receivedErrors.first(where: { $0 != nil }) ?? nil
             
-            sself.saveData(data: decodedEmployees)
+            let uniqueEmployees = Array(Set(decodedEmployees))
+            sself.saveData(data: uniqueEmployees)
             
-            completion(decodedEmployees, requestSucceeded, errorToSend)
+            completion(uniqueEmployees, requestSucceeded, errorToSend)
         }
     }
     

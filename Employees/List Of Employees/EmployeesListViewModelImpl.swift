@@ -72,7 +72,7 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel {
                 sself.errorOccured?()
             }
             
-            sself.employees = Array(Set(allEmployees))
+            sself.employees = allEmployees
             
             sself.setUpPositions()
         }

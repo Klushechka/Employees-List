@@ -12,5 +12,5 @@ protocol EmployeeDetailsViewModel {
     init(with employee: Employee)
     
     var employee: Employee { get }
-    
+    var showOpenLocalContactsButton: Bool { get }
 }

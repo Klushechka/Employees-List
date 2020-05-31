@@ -11,6 +11,7 @@ import Foundation
 final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel {
     
     var employee: Employee
+    var showOpenLocalContactsButton: Bool = false
     
     init(with employee: Employee) {
         self.employee = employee

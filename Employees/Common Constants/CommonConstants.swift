@@ -22,3 +22,10 @@ struct EmployeesListConstants {
     static let refreshControlText = "The list is being refreshed."
     
 }
+
+struct EmployeeDetailsConstants {
+    
+    static let projectsPlaceholder = "This employee doesn't have any projects."
+    static let projects = "Projects: "
+    
+}
