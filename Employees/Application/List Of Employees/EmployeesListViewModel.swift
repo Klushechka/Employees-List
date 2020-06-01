@@ -7,23 +7,24 @@
 //
 
 import UIKit
-import Contacts
+
 
 protocol EmployeesListViewModel {
+    var employees: [Employee]? { get }
+       var positions: [String?]? { get }
+       //var localContactsNames: [String]? { get }
+       var showContactsAlert:(() -> Void)? { get set }
+       
+       var employeesListUpdated: (() -> Void)? { get set }
+       var localContactsListUpdated: (() -> Void)? { get set }
+       var errorOccured: (() -> Void)? { get set }
+    
     func downloadEmployees()
     func employeesWithPosition(positionSection: Int) -> [Employee]?
-    func employeeIsInDeviceContacts(employee: Employee) -> Bool
+    func isEmployeeInLocalContacts(employee: Employee) -> Bool
     
-    func deviceContact(fullName: String) -> CNContact?
-    func fetchDeviceContacts()
+//    func localContact(fullName: String) -> CNContact?
+//    func fetchLocalContacts()
     
-    var employees: [Employee]? { get }
-    var positions: [String?]? { get }
-    var deviceContactsNames: [String]? { get }
-    
-    var isOpenDeviceContactsButtonNeeded: Bool { get }
-    var showContactsAlert:(() -> Void)? { get set }
-    
-    var dataUpdated: (() -> Void)? { get set }
-    var errorOccured: (() -> Void)? { get set }
+   
 }

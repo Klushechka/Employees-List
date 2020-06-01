@@ -45,6 +45,14 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tgb-sT-Vgw">
+                                <rect key="frame" x="10" y="600" width="394" height="34"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                <state key="normal" title="Info in Contacts"/>
+                                <connections>
+                                    <action selector="localContactButtonTapped:" destination="ZsK-ba-5li" eventType="touchUpInside" id="vfa-kr-fVd"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -57,10 +65,13 @@
                             <constraint firstItem="hUs-mL-f22" firstAttribute="leading" secondItem="o1n-FY-NAX" secondAttribute="leading" id="Kr2-s8-2dm"/>
                             <constraint firstItem="IVS-Vd-j0a" firstAttribute="trailing" secondItem="o1n-FY-NAX" secondAttribute="trailing" constant="10" id="QWi-2h-6AZ"/>
                             <constraint firstItem="yUV-ER-URV" firstAttribute="trailing" secondItem="o1n-FY-NAX" secondAttribute="trailing" id="TPS-IA-Rsp"/>
+                            <constraint firstItem="Tgb-sT-Vgw" firstAttribute="top" secondItem="yUV-ER-URV" secondAttribute="bottom" constant="20" id="TyK-UL-kMA"/>
                             <constraint firstItem="hUs-mL-f22" firstAttribute="trailing" secondItem="o1n-FY-NAX" secondAttribute="trailing" id="VrS-Vz-uAp"/>
+                            <constraint firstItem="Tgb-sT-Vgw" firstAttribute="trailing" secondItem="o1n-FY-NAX" secondAttribute="trailing" id="WFZ-sd-GiV"/>
                             <constraint firstItem="hUs-mL-f22" firstAttribute="centerX" secondItem="hre-WP-gDd" secondAttribute="centerX" id="WOm-Gy-i1l"/>
                             <constraint firstItem="yUV-ER-URV" firstAttribute="top" secondItem="Q3b-KE-7Cz" secondAttribute="bottom" constant="20" id="YuJ-Se-VhX"/>
                             <constraint firstItem="hUs-mL-f22" firstAttribute="centerY" secondItem="hre-WP-gDd" secondAttribute="centerY" id="bcX-s6-adI"/>
+                            <constraint firstItem="Tgb-sT-Vgw" firstAttribute="leading" secondItem="o1n-FY-NAX" secondAttribute="leading" id="gKr-gU-129"/>
                             <constraint firstItem="Q3b-KE-7Cz" firstAttribute="leading" secondItem="o1n-FY-NAX" secondAttribute="leading" id="hGh-NZ-Bcr"/>
                             <constraint firstItem="VPZ-x8-oh2" firstAttribute="trailing" secondItem="o1n-FY-NAX" secondAttribute="trailing" id="jCj-6n-rrb"/>
                             <constraint firstItem="VPZ-x8-oh2" firstAttribute="top" secondItem="hUs-mL-f22" secondAttribute="bottom" constant="20" id="v23-rq-JCD"/>
@@ -71,6 +82,7 @@
                     <connections>
                         <outlet property="emailLabel" destination="Q3b-KE-7Cz" id="dbT-x8-G1f"/>
                         <outlet property="nameAndSurnameLabel" destination="o1n-FY-NAX" id="NVu-xi-EnD"/>
+                        <outlet property="openLocalContactsButton" destination="Tgb-sT-Vgw" id="dSa-z0-lG2"/>
                         <outlet property="phoneLabel" destination="VPZ-x8-oh2" id="gti-mF-827"/>
                         <outlet property="positionLabel" destination="hUs-mL-f22" id="bXe-tS-EvY"/>
                         <outlet property="projectsLabel" destination="yUV-ER-URV" id="IGl-kU-6GA"/>

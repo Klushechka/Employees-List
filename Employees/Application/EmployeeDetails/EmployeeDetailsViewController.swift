@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import ContactsUI
 
 final class EmployeeDetailsViewController: UIViewController {
     @IBOutlet weak var nameAndSurnameLabel: UILabel!
@@ -15,13 +16,23 @@ final class EmployeeDetailsViewController: UIViewController {
     @IBOutlet weak var phoneLabel: UILabel!
     @IBOutlet weak var emailLabel: UILabel!
     @IBOutlet weak var projectsLabel: UILabel!
+    @IBOutlet weak var openLocalContactsButton: UIButton!
     
-    var viewModel: EmployeeDetailsViewModel?
+    var viewModel: EmployeeDetailsViewModelImpl?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpLabels()
+        showLocalContactButtonIfNeeded()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.fetchLocalContacts()
     }
     
     private func setUpLabels() {
@@ -65,6 +76,33 @@ final class EmployeeDetailsViewController: UIViewController {
         }
     }
     
+    @IBAction func localContactButtonTapped(_ sender: Any) {
+        guard let viewModel = self.viewModel else { return }
+        
+        openLocalContact(fullName: viewModel.employee.name +  " " + viewModel.employee.surname)
+    }
     
+}
+
+private extension EmployeeDetailsViewController {
+    
+    func showLocalContactButtonIfNeeded() {
+        guard let viewModel = self.viewModel else { return }
+        
+        self.openLocalContactsButton.isHidden = !viewModel.showLocalContactButton
+        
+        viewModel.localContactsListUpdated = {
+            DispatchQueue.main.async {
+                self.openLocalContactsButton.isHidden = !viewModel.showLocalContactButton
+            }
+        }
+    }
+    
+    func openLocalContact(fullName: String) {
+        guard let viewModel = self.viewModel, let navigationController = self.navigationController, let contact = viewModel.localContact(fullName: fullName) else { return }
+        
+        let contactVC = CNContactViewController(for: contact)
+        navigationController.pushViewController(contactVC, animated: true)
+    }
     
 }

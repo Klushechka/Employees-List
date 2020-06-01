@@ -14,7 +14,8 @@ import ContactsUI
 final class EmployeesListViewController: UIViewController {
     
     @IBOutlet weak var employeesTableView: UITableView!
-    private var viewModel: EmployeesListViewModel?
+    
+    private var viewModel: EmployeeListViewModelImpl?
     
     private var refreshControl: UIRefreshControl?
     private var activityIndicator: UIActivityIndicatorView?
@@ -24,10 +25,10 @@ final class EmployeesListViewController: UIViewController {
         super.viewDidLoad()
         
         setUpViewModelAndCallbacks()
-        addRefreshControl()
+        setUpTableViewRefreshControl()
         showPlaceholderOrEmployeesTable()
         setUpActivityIndicator()
-        setUpLocalContactsCallback() 
+        setUpLocalContactsCallback()
         
         self.employeesTableView.delegate = self
         self.employeesTableView.dataSource = self
@@ -40,7 +41,7 @@ final class EmployeesListViewController: UIViewController {
         
         navigationController.setNavigationBarHidden(true, animated: animated)
         
-        viewModel.fetchDeviceContacts()
+        viewModel.fetchLocalContacts()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -53,11 +54,20 @@ final class EmployeesListViewController: UIViewController {
     
 }
 
-extension EmployeesListViewController {
+private extension EmployeesListViewController {
     
     func setUpViewModelAndCallbacks() {
         self.viewModel = EmployeeListViewModelImpl()
-        self.viewModel?.errorOccured = { [weak self] in
+        
+        setUpErrorCallback()
+        setUpEmployeesUpdateCallback()
+        setUpLocalContactsUpdateCallback()
+    }
+    
+    func setUpErrorCallback() {
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.errorOccured = { [weak self] in
             guard let sself = self else { return }
             
             sself.stopSpinnersAnimation()
@@ -66,13 +76,17 @@ extension EmployeesListViewController {
                 sself.showDefaultAlert(title: AlertConstants.title, message: AlertConstants.message, buttonLabel: Constants.closeButton)
             }
         }
+    }
+    
+    func setUpEmployeesUpdateCallback() {
+        guard let viewModel = self.viewModel else { return }
         
-        self.viewModel?.dataUpdated = { [weak self] in
-            guard let self = self, let employees = self.viewModel?.employees else { return }
+        viewModel.employeesListUpdated = { [weak self] in
+            guard let self = self, let employees = viewModel.employees else { return }
             
             if employees.count > 0 {
                 DispatchQueue.main.async {
-                    self.employeesTableView.restore()
+                    self.employeesTableView.hidePlaceholder()
                     self.employeesTableView.reloadData()
                 }
             }
@@ -81,21 +95,35 @@ extension EmployeesListViewController {
         }
     }
     
+    func setUpLocalContactsUpdateCallback() {
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.localContactsListUpdated = {
+            guard let employees = viewModel.employees else { return }
+            if employees.count > 0 {
+                DispatchQueue.main.async {
+                    self.employeesTableView.reloadData()
+                }
+            }
+        }
+    }
+    
+}
+
+private extension EmployeesListViewController {
+    
     func showPlaceholderOrEmployeesTable() {
         guard let viewModel = self.viewModel, let employees = viewModel.employees, employees.count > 0 else {
             
             DispatchQueue.main.async {
-                self.showPlaceholderProgramatically()
+                self.employeesTableView.showPlaceholder(message: EmployeesConstants.tableViewPlaceholderText)
             }
+            
             return
         }
     }
     
-    func showPlaceholderProgramatically() {
-        self.employeesTableView.showPlaceholder(message: EmployeesConstants.tableViewPlaceholderText)
-    }
-    
-    private func addRefreshControl() {
+    func setUpTableViewRefreshControl() {
         self.refreshControl = UIRefreshControl()
         
         guard let refreshControl = self.refreshControl else { return }
@@ -105,20 +133,19 @@ extension EmployeesListViewController {
         self.employeesTableView.addSubview(refreshControl)
     }
     
-    private func setUpActivityIndicator() {
+    func setUpActivityIndicator() {
         self.activityIndicator = UIActivityIndicatorView()
-        self.activityIndicator?.style = .medium
-        self.activityIndicator?.backgroundColor = .darkGray
-        
         guard let activityIndicator = self.activityIndicator else { return }
+        
+        activityIndicator.style = .medium
+        activityIndicator.backgroundColor = .darkGray
         
         self.view.addSubview(activityIndicator)
         activityIndicator.center = self.view.center
-        
         activityIndicator.startAnimating()
     }
     
-    private func stopSpinnersAnimation() {
+    func stopSpinnersAnimation() {
         DispatchQueue.main.async {
             self.refreshControl?.endRefreshing()
             self.activityIndicator?.stopAnimating()
@@ -149,11 +176,11 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
-
+        
         if cell == nil {
             tableView.register(UINib(nibName: EmployeeCell.nibName, bundle: nil), forCellReuseIdentifier: EmployeeCell.identifier)
             cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
-          }
+        }
         
         guard let viewModel = self.viewModel, let employeeCell = cell,
             let employees = viewModel.employeesWithPosition(positionSection: indexPath.section) else {
@@ -161,17 +188,14 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         }
         
         let employee = employees[indexPath.row]
-        let employeeFullName = "\(employee.name) \(employee.surname)"
-
-        employeeCell.buttonTapped = {
-            self.openDeviceContact(with: employeeFullName)
+        
+        employeeCell.nameSurnameLabel.text = employee.name + " " + employee.surname
+        employeeCell.openLocalContactsButton.isHidden = !viewModel.isEmployeeInLocalContacts(employee: employees[indexPath.row])
+        employeeCell.localContactButtonTapped = {
+            self.openLocalContact(with: employee.name + " " + employee.surname)
         }
-            employeeCell.nameSurnameLabel.text = employeeFullName
-            employeeCell.openDeviceContactsButton.setTitle(DetailsConstants.more, for: .normal)
-            employeeCell.openDeviceContactsButton.isHidden = !viewModel.employeeIsInDeviceContacts(employee: employees[indexPath.row])
-        print ("DEVICE CONTACTS: \(String(describing: viewModel.deviceContactsNames))")
-            
-            return employeeCell
+        
+        return employeeCell
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -196,18 +220,18 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
     
 }
 
-extension EmployeesListViewController {
+private extension EmployeesListViewController {
     
     func setUpLocalContactsCallback() {
-        guard var viewModel = self.viewModel else { return }
+        guard let viewModel = self.viewModel else { return }
         
         viewModel.showContactsAlert = {
             self.showContactsSettingsAlert()
         }
     }
     
-    private func openDeviceContact(with fullName: String) {
-        guard let viewModel = self.viewModel, let navigationController = self.navigationController, let contact = viewModel.deviceContact(fullName: fullName) else { return }
+    func openLocalContact(with fullName: String) {
+        guard let viewModel = self.viewModel, let navigationController = self.navigationController, let contact = viewModel.localContact(fullName: fullName) else { return }
         
         let contactVC = CNContactViewController(for: contact)
         navigationController.pushViewController(contactVC, animated: true)

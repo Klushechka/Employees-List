@@ -9,32 +9,33 @@
 import Foundation
 import Contacts
 
-final class EmployeeListViewModelImpl: EmployeesListViewModel {
+final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsViewModel {
     
     var employees: [Employee]? {
         didSet {
-            fetchDeviceContacts()
+            self.employeesListUpdated?()
         }
     }
     
     var positions: [String?]? {
         didSet {
-            self.dataUpdated?()
+            self.employeesListUpdated?()
         }
     }
     
-    var isOpenDeviceContactsButtonNeeded: Bool = false
+    var localContactsService: LocalContactsService?
     
-    var deviceContactsService: LocalContactsService?
-    
-    var deviceContactsNames: [String]? {
+    var localContactsNames: [String]? {
         didSet {
-            dataUpdated?()
+            if self.localContactsNames != oldValue {
+                self.localContactsListUpdated?()
+            }
         }
     }
     
     var showContactsAlert:(() -> Void)?
-    var dataUpdated: (() -> Void)?
+    var employeesListUpdated: (() -> Void)?
+    var localContactsListUpdated: (() -> Void)?
     var errorOccured: (() -> Void)?
     
     private var employeesOperation: EmployeesOperation?
@@ -43,7 +44,7 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel {
     init() {
         setUpNetworkManager()
         getEmployees()
-        fetchDeviceContacts()
+        fetchLocalContacts()
     }
     
     private func setUpNetworkManager() {
@@ -117,28 +118,28 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel {
 
 extension EmployeeListViewModelImpl {
     
-    func fetchDeviceContacts() {
-        self.deviceContactsService = LocalContactsService()
+    internal func fetchLocalContacts() {
+        self.localContactsService = LocalContactsService()
         
-        guard let deviceContactsService = self.deviceContactsService else { return }
+        guard let localContactsService = self.localContactsService else { return }
         
-        self.deviceContactsNames = deviceContactsService.localContactsNames()
+        self.localContactsNames = localContactsService.localContactsNames()
         
-        deviceContactsService.permissionRequestNeeded = {
+        localContactsService.permissionRequestNeeded = {
             self.showContactsAlert?()
         }
     }
     
-    func employeeIsInDeviceContacts(employee: Employee) -> Bool {
-        guard let deviceContactsNames = self.deviceContactsNames else { return false }
+    func isEmployeeInLocalContacts(employee: Employee) -> Bool {
+        guard let localContactsNames = self.localContactsNames else { return false }
         
         let fullName = String("\(employee.name) \(employee.surname)").lowercased()
         
-        return deviceContactsNames.contains(fullName)
+        return localContactsNames.contains(fullName)
     }
     
-    func deviceContact(fullName: String) -> CNContact? {
-        guard let localContact = self.deviceContactsService?.contact(with: fullName) else {
+    func localContact(fullName: String) -> CNContact? {
+        guard let localContact = self.localContactsService?.contact(with: fullName) else {
             self.errorOccured?()
             return nil
         }
