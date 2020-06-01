@@ -14,7 +14,7 @@ extension UITableView {
     func showPlaceholder(message: String) {
         guard let view = self.superview else { return }
         
-        let rect = CGRect(origin: CGPoint(x: 0,y :0), size: CGSize(width: view.frame.size.width, height: view.frame.size.height))
+        let rect = CGRect(origin: CGPoint(x: 0, y :0), size: CGSize(width: view.frame.size.width, height: view.frame.size.height))
         
         let messageLabel = UILabel(frame: rect)
         messageLabel.text = message
@@ -27,7 +27,7 @@ extension UITableView {
         self.separatorStyle = .none
     }
     
-    func restore() {
+    func hidePlaceholder() {
         self.backgroundView = nil
         self.separatorStyle = .singleLine
     }

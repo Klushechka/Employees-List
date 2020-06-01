@@ -40,6 +40,7 @@
 		69CF07382483FCE8002BA691 /* LocalContactsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07372483FCE8002BA691 /* LocalContactsService.swift */; };
 		69CF07412484357F002BA691 /* EmployeeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF073F2484357F002BA691 /* EmployeeCell.swift */; };
 		69CF07422484357F002BA691 /* EmployeeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 69CF07402484357F002BA691 /* EmployeeCell.xib */; };
+		69CF074424850A3C002BA691 /* LocalContactsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF074324850A3C002BA691 /* LocalContactsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -90,6 +91,7 @@
 		69CF07372483FCE8002BA691 /* LocalContactsService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalContactsService.swift; sourceTree = "<group>"; };
 		69CF073F2484357F002BA691 /* EmployeeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeCell.swift; sourceTree = "<group>"; };
 		69CF07402484357F002BA691 /* EmployeeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmployeeCell.xib; sourceTree = "<group>"; };
+		69CF074324850A3C002BA691 /* LocalContactsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalContactsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -268,6 +270,7 @@
 			isa = PBXGroup;
 			children = (
 				69CF07372483FCE8002BA691 /* LocalContactsService.swift */,
+				69CF074324850A3C002BA691 /* LocalContactsViewModel.swift */,
 			);
 			path = "Local Contacts Service";
 			sourceTree = "<group>";
@@ -441,6 +444,7 @@
 				69B7AADE24817ED000716B77 /* CommonConstants.swift in Sources */,
 				69B7AAD32481517B00716B77 /* NetworkingManager.swift in Sources */,
 				69533E93247E86ED001AC751 /* TallinnEndpoint.swift in Sources */,
+				69CF074424850A3C002BA691 /* LocalContactsViewModel.swift in Sources */,
 				69B7AADB24817DD300716B77 /* EmployeesListViewModel.swift in Sources */,
 				69533E9C247EBD98001AC751 /* ViewControllersFactory.swift in Sources */,
 			);

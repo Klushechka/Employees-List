@@ -13,14 +13,13 @@ class EmployeeCell: UITableViewCell {
     static let identifier = "employeeCell"
     static let nibName = "EmployeeCell"
 
-    @IBOutlet weak var openDeviceContactsButton: UIButton!
+    @IBOutlet weak var openLocalContactsButton: UIButton!
     @IBOutlet weak var nameSurnameLabel: UILabel!
     
-    var buttonTapped: (() -> Void)?
+    var localContactButtonTapped: (() -> Void)?
     
-    
-    @IBAction func buttonTapped(_ sender: Any) {
-        buttonTapped?()
+    @IBAction func localContactButtonTapped(_ sender: Any) {
+        localContactButtonTapped?()
     }
     
 }

@@ -22,20 +22,22 @@
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfy-h8-HHu">
-                        <rect key="frame" x="255" y="0.0" width="60" height="76"/>
+                    <button opaque="NO" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Hfy-h8-HHu">
+                        <rect key="frame" x="260" y="0.0" width="60" height="76"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="60" id="44S-KE-1T9"/>
                         </constraints>
-                        <state key="normal" title="Button"/>
+                        <state key="normal" image="person.crop.circle.fill" catalog="system">
+                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="heavy"/>
+                        </state>
                         <connections>
-                            <action selector="buttonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="i4C-xi-zWp"/>
+                            <action selector="localContactButtonTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="i4C-xi-zWp"/>
                         </connections>
                     </button>
                 </subviews>
                 <constraints>
                     <constraint firstItem="Hfy-h8-HHu" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="2cA-ce-RNK"/>
-                    <constraint firstAttribute="trailing" secondItem="Hfy-h8-HHu" secondAttribute="trailing" constant="5" id="6AO-0S-VjT"/>
+                    <constraint firstAttribute="trailing" secondItem="Hfy-h8-HHu" secondAttribute="trailing" id="6AO-0S-VjT"/>
                     <constraint firstAttribute="bottom" secondItem="Hfy-h8-HHu" secondAttribute="bottom" id="DQb-9V-qL8"/>
                     <constraint firstItem="Ygv-bp-Uvc" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="aRZ-pa-R2W"/>
                     <constraint firstItem="Hfy-h8-HHu" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="c9I-gB-Ti2"/>
@@ -45,9 +47,12 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="nameSurnameLabel" destination="Ygv-bp-Uvc" id="H3f-DJ-s5R"/>
-                <outlet property="openDeviceContactsButton" destination="Hfy-h8-HHu" id="sio-hk-x5W"/>
+                <outlet property="openLocalContactsButton" destination="Hfy-h8-HHu" id="sio-hk-x5W"/>
             </connections>
             <point key="canvasLocation" x="134.78260869565219" y="158.70535714285714"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="person.crop.circle.fill" catalog="system" width="128" height="121"/>
+    </resources>
 </document>

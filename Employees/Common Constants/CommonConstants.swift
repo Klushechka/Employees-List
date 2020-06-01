@@ -36,10 +36,8 @@ struct EmployeesConstants {
 
 struct DetailsConstants {
     
-    static let projectsPlaceholder = "This employee doesn't have any projects."
+    static let projectsPlaceholder = "No data about projects."
     static let projects = "Projects: "
-    static let phonePlaceholder = "This employee doesn't have a phone number."
-    
-    static let more = "More"
+    static let phonePlaceholder = "No data about a phone number."
     
 }
