@@ -17,7 +17,20 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         }
     }
     
-    var positions: [String?]? {
+    var positions: [String]? {
+        didSet {
+            self.employeesListUpdated?()
+        }
+    }
+    
+    var positionsForSearchResults: [String]? {
+        didSet {
+            print ("SECTIONS FOR SEARCH: \(self.positionsForSearchResults)")
+            self.employeesListUpdated?()
+        }
+    }
+    
+    var employeesMatchingQuery: [Employee]? {
         didSet {
             self.employeesListUpdated?()
         }
@@ -92,8 +105,15 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         }
     }
     
-    private func setUpPositions() {
-        guard let employees = self.employees else { return }
+    private func setUpPositions(isSearchActive: Bool = false) {
+        var employeesList: [Employee]?
+        
+        switch isSearchActive {
+        case true: employeesList = self.employeesMatchingQuery
+        case false: employeesList = self.employees
+        }
+        
+        guard let employees = employeesList else { return }
 
         var allPositions = [String]()
         
@@ -103,13 +123,27 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
             }
         }
 
-        self.positions = allPositions.sorted(by: { $0 < $1 })
+        let sortedPositions = allPositions.sorted(by: { $0 < $1 })
+        
+        if isSearchActive {
+            self.positionsForSearchResults = sortedPositions
+            
+            return
+        }
+        
+        self.positions = sortedPositions
     }
     
-    func employeesWithPosition(positionSection: Int) -> [Employee]? {
-        guard let employees = self.employees, let allPositions = self.positions, let position = allPositions[positionSection] else { return nil }
+    func employeesWithPosition(positionSection: Int, isSearchActive: Bool = false) -> [Employee]? {
+        let emploeesList = isSearchActive ? self.employeesMatchingQuery : self.employees
         
-        let employeesWithParticularPosition = employees.filter( { $0.position == position })
+        guard let employees = emploeesList else { return nil }
+        
+        let positions = isSearchActive ?  self.positionsForSearchResults : self.positions
+        
+        guard let allPositions = positions else { return nil }
+        
+        let employeesWithParticularPosition = employees.filter( { $0.position == allPositions[positionSection] })
         
         return employeesWithParticularPosition.sorted(by: { $0.surname < $1.surname })
     }
@@ -145,6 +179,30 @@ extension EmployeeListViewModelImpl {
         }
         
         return localContact
+    }
+    
+}
+
+extension EmployeeListViewModelImpl {
+    
+    func filterEmployeesMatching(text: String?) {
+        guard let text = text, text.count > 0 else {
+            return
+        }
+        guard let employees = self.employees, employees.count > 0 else {
+            return
+        }
+        
+        self.employeesMatchingQuery = employees.filter { $0.name.lowercased().range(of: text.lowercased()) != nil ||
+        $0.surname.lowercased().range(of: text.lowercased()) != nil ||
+           
+            $0.contactDetails.phone?.lowercased().range(of: text.lowercased()) != nil ||
+            $0.contactDetails.email.lowercased().range(of: text.lowercased()) != nil
+        }
+        
+        print("EMPLOYEES MATCHING QUERY \(text): \(self.employeesMatchingQuery)")
+        
+        setUpPositions(isSearchActive: true)
     }
     
 }

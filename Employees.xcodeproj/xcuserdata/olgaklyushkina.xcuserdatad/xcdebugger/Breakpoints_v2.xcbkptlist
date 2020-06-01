@@ -62,8 +62,8 @@
             filePath = "Employees/Application/List Of Employees/EmployeesListViewModelImpl.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "142"
-            endingLineNumber = "142"
+            startingLineNumber = "176"
+            endingLineNumber = "176"
             landmarkName = "localContact(fullName:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -81,6 +81,134 @@
             startingLineNumber = "96"
             endingLineNumber = "96"
             landmarkName = "showLocalContactButtonIfNeeded()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "17E840D1-FFE3-4265-A9DB-863264DCAEC1"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "295"
+            endingLineNumber = "295"
+            landmarkName = "employeeFilteredIfNeeded(for:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7417FA54-0E44-4F55-9FBF-5645023A5E87"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewModelImpl.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "129"
+            endingLineNumber = "129"
+            landmarkName = "setUpPositions(isSearchActive:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "38FA4DEA-78DC-40F3-AA7E-0B2CFE3774EA"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "89"
+            endingLineNumber = "89"
+            landmarkName = "setUpEmployeesUpdateCallback()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "65DA67AF-2066-4E73-B452-5110AF0EB7EC"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "88"
+            endingLineNumber = "88"
+            landmarkName = "setUpEmployeesUpdateCallback()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "65DA67AF-2066-4E73-B452-5110AF0EB7EC - 632cec71a3eae2e4"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "Employees.EmployeesListViewController.(setUpEmployeesUpdateCallback in _3EC948D41B8850AFDD061F473E260EA3)() -&gt; ()"
+                  moduleName = "Employees"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olgaklyushkina/Employees/Employees/Application/List%20Of%20Employees/EmployeesListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "236">
+               </Location>
+               <Location
+                  uuid = "65DA67AF-2066-4E73-B452-5110AF0EB7EC - 8bf4b8a248fefeb2"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 () -&gt; () in Employees.EmployeesListViewController.(setUpEmployeesUpdateCallback in _3EC948D41B8850AFDD061F473E260EA3)() -&gt; ()"
+                  moduleName = "Employees"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/olgaklyushkina/Employees/Employees/Application/List%20Of%20Employees/EmployeesListViewController.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "89"
+                  endingLineNumber = "89"
+                  offsetFromSymbolStart = "195">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B74DA37E-FCEB-41F3-B77E-D8FEA42C2B63"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "212"
+            endingLineNumber = "212"
+            landmarkName = "numberOfSections(in:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "1572211B-1F28-4563-97A3-2716F0797853"
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Employees/Application/List Of Employees/EmployeesListViewModelImpl.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "144"
+            endingLineNumber = "144"
+            landmarkName = "employeesWithPosition(positionSection:isSearchActive:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

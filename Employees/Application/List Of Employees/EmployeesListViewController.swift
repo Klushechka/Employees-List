@@ -13,13 +13,15 @@ import ContactsUI
 
 final class EmployeesListViewController: UIViewController {
     
+    @IBOutlet weak var searchBar: UISearchBar!
     @IBOutlet weak var employeesTableView: UITableView!
     
     private var viewModel: EmployeeListViewModelImpl?
+    private var searchController: UISearchController?
     
     private var refreshControl: UIRefreshControl?
     private var activityIndicator: UIActivityIndicatorView?
-    
+    private var isSearchActive: Bool = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,8 @@ final class EmployeesListViewController: UIViewController {
         showPlaceholderOrEmployeesTable()
         setUpActivityIndicator()
         setUpLocalContactsCallback()
+        
+        setUpSearchBar()
         
         self.employeesTableView.delegate = self
         self.employeesTableView.dataSource = self
@@ -168,8 +172,9 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         tableView.deselectRow(at: indexPath, animated: true)
         guard let navigationController = self.navigationController else { return }
         
-        guard let employeeDetailsVC = ViewControllerFactory.viewController(for: .employeeDetails) as? EmployeeDetailsViewController, let viewModel = self.viewModel, let employeesInSection = viewModel.employeesWithPosition(positionSection: indexPath.section) else { return }
+        guard let employeeDetailsVC = ViewControllerFactory.viewController(for: .employeeDetails) as? EmployeeDetailsViewController, let viewModel = self.viewModel else { return }
         
+        guard let employeesInSection =  viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else { return }
         employeeDetailsVC.viewModel = EmployeeDetailsViewModelImpl(with: employeesInSection[indexPath.row])
         navigationController.pushViewController(employeeDetailsVC, animated: true)
     }
@@ -182,15 +187,16 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
             cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
         }
         
-        guard let viewModel = self.viewModel, let employeeCell = cell,
-            let employees = viewModel.employeesWithPosition(positionSection: indexPath.section) else {
+        guard let viewModel = self.viewModel, let employeeCell = cell else {
                 return UITableViewCell()
         }
         
-        let employee = employees[indexPath.row]
+        guard let fullEmployeesList = viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else { return UITableViewCell() }
+        
+        let employee = fullEmployeesList[indexPath.row]
         
         employeeCell.nameSurnameLabel.text = employee.name + " " + employee.surname
-        employeeCell.openLocalContactsButton.isHidden = !viewModel.isEmployeeInLocalContacts(employee: employees[indexPath.row])
+        employeeCell.openLocalContactsButton.isHidden = !viewModel.isEmployeeInLocalContacts(employee: employee)
         employeeCell.localContactButtonTapped = {
             self.openLocalContact(with: employee.name + " " + employee.surname)
         }
@@ -199,23 +205,39 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        guard let viewModel = self.viewModel, let projects = viewModel.positions else {
+        guard let viewModel = self.viewModel else {
             return 0
         }
         
-        return projects.count
+        if self.isSearchActive, let positionsForSearchResults = viewModel.positionsForSearchResults {
+            return positionsForSearchResults.count
+        }
+        else if let positions = viewModel.positions {
+            return positions.count
+        }
+        
+        return 0
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = self.viewModel, let employees = viewModel.employeesWithPosition(positionSection: section) else { return 0 }
+        if let viewModel = self.viewModel, let employees = viewModel.employeesWithPosition(positionSection: section, isSearchActive: self.isSearchActive) {
+            return employees.count
+        }
         
-        return employees.count
+        return 0
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        guard let viewModel = self.viewModel, let projects = viewModel.positions else { return  nil }
+        guard let viewModel = self.viewModel else { return  nil }
         
-        return projects[section]
+        if self.isSearchActive, let positionsForSearchResults = viewModel.positionsForSearchResults {
+            return positionsForSearchResults[section]
+        }
+        else if let projects = viewModel.positions {
+            return projects[section]
+        }
+        
+        return nil
     }
     
 }
@@ -236,5 +258,49 @@ private extension EmployeesListViewController {
         let contactVC = CNContactViewController(for: contact)
         navigationController.pushViewController(contactVC, animated: true)
     }
+    
+}
+
+extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDelegate {
+    
+    func setUpSearchBar() {
+        self.searchBar.placeholder = "Search"
+        self.searchBar.delegate = self
+        self.searchBar.showsCancelButton = true
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.resignFirstResponder()
+    }
+    
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        guard let employeesTableView = self.employeesTableView else { return }
+        
+        self.isSearchActive = false
+        self.searchBar.text = ""
+        employeesTableView.reloadData()
+    }
+
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        guard let viewModel = self.viewModel else { return }
+        
+        self.isSearchActive = true
+        
+        viewModel.filterEmployeesMatching(text: searchBar.text)
+    }
+    
+    func employeeFilteredIfNeeded(for indexPath: IndexPath) -> Employee? {
+        guard let viewModel = self.viewModel else { return nil }
+        
+        if self.isSearchActive, let employeesMatchingQuery = viewModel.employeesMatchingQuery {
+            return employeesMatchingQuery[indexPath.row]
+        }
+        else if let employees = viewModel.employeesWithPosition(positionSection: indexPath.section) {
+            return employees[indexPath.row]
+        }
+        
+        return nil
+    }
+    
     
 }

@@ -16,7 +16,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" rowHeight="50" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" translatesAutoresizingMaskIntoConstraints="NO" id="F2J-ss-m8c">
-                                <rect key="frame" x="0.0" y="88" width="414" height="808"/>
+                                <rect key="frame" x="0.0" y="144" width="414" height="752"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                 <color key="sectionIndexBackgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
@@ -35,10 +35,20 @@
                                     <outlet property="delegate" destination="RRE-qr-vDT" id="c9J-WC-yew"/>
                                 </connections>
                             </tableView>
+                            <searchBar contentMode="redraw" translatesAutoresizingMaskIntoConstraints="NO" id="ecg-QL-JcX">
+                                <rect key="frame" x="0.0" y="88" width="414" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="RRE-qr-vDT" id="ugD-fn-znr"/>
+                                </connections>
+                            </searchBar>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemGray6Color" red="0.94901960780000005" green="0.94901960780000005" blue="0.96862745100000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="F2J-ss-m8c" firstAttribute="top" secondItem="Mre-jp-zb7" secondAttribute="top" id="WoV-k5-8wX"/>
+                            <constraint firstItem="F2J-ss-m8c" firstAttribute="top" secondItem="ecg-QL-JcX" secondAttribute="bottom" id="499-0Q-XWM"/>
+                            <constraint firstItem="ecg-QL-JcX" firstAttribute="top" secondItem="Mre-jp-zb7" secondAttribute="top" id="KTc-Sv-Qe5"/>
+                            <constraint firstItem="ecg-QL-JcX" firstAttribute="trailing" secondItem="MWL-Ul-HkA" secondAttribute="trailing" id="RJh-N4-O9d"/>
+                            <constraint firstItem="ecg-QL-JcX" firstAttribute="leading" secondItem="MWL-Ul-HkA" secondAttribute="leading" id="YbQ-RU-Sl6"/>
                             <constraint firstItem="F2J-ss-m8c" firstAttribute="trailing" secondItem="MWL-Ul-HkA" secondAttribute="trailing" id="Z3k-UL-rAs"/>
                             <constraint firstAttribute="bottom" secondItem="F2J-ss-m8c" secondAttribute="bottom" id="vN2-XT-zlU"/>
                             <constraint firstItem="F2J-ss-m8c" firstAttribute="leading" secondItem="MWL-Ul-HkA" secondAttribute="leading" id="xm7-Z0-TGr"/>
@@ -48,6 +58,7 @@
                     <navigationItem key="navigationItem" id="WZF-Dw-qgb"/>
                     <connections>
                         <outlet property="employeesTableView" destination="F2J-ss-m8c" id="Sb5-UD-tgn"/>
+                        <outlet property="searchBar" destination="ecg-QL-JcX" id="zUa-AN-P2J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9tc-hj-V9I" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
