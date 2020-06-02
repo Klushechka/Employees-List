@@ -20,7 +20,7 @@ protocol EmployeesListViewModel {
     var localContactsListUpdated: (() -> Void)? { get set }
     var errorOccured: (() -> Void)? { get set }
     
-    func downloadEmployees()
+    func downloadEmployees(completion: (() -> Void)?)
     //func employeesWithPosition(positionSection: Int) -> [Employee]?
     func employeesWithPosition(positionSection: Int, isSearchActive: Bool) -> [Employee]?
      func filterEmployeesMatching(text: String?)

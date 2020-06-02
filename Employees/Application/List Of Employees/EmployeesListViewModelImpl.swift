@@ -13,7 +13,10 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     
     var employees: [Employee]? {
         didSet {
-            self.employeesListUpdated?()
+            if self.employees != oldValue {
+                print ("LIST CHANGED")
+                self.employeesListUpdated?()
+            }
         }
     }
     
@@ -25,7 +28,8 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     
     var positionsForSearchResults: [String]? {
         didSet {
-            print ("SECTIONS FOR SEARCH: \(self.positionsForSearchResults)")
+            self.isSearchRefreshCompleted = true
+            
             self.employeesListUpdated?()
         }
     }
@@ -36,8 +40,6 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         }
     }
     
-    var localContactsService: LocalContactsService?
-    
     var localContactsNames: [String]? {
         didSet {
             if self.localContactsNames != oldValue {
@@ -45,6 +47,10 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
             }
         }
     }
+    
+    var localContactsService: LocalContactsService?
+    
+    var isSearchRefreshCompleted: Bool = false
     
     var showContactsAlert:(() -> Void)?
     var employeesListUpdated: (() -> Void)?
@@ -56,7 +62,7 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     
     init() {
         setUpNetworkManager()
-        getEmployees()
+        fetchEmployees()
         fetchLocalContacts()
     }
     
@@ -64,9 +70,8 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         self.networkManager = NetworkingManager()
     }
     
-    func getEmployees() {
+    private func fetchEmployees() {
         if let storedEmployees = fetchStoredEmployees() {
-            print("MANAGED TO FETCH EMPLOYEES: \(storedEmployees)")
             self.employees = storedEmployees
             self.setUpPositions()
         }
@@ -80,28 +85,30 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         return networkManager.retrieveData(fileName: .employees, dataType: [Employee].self)
     }
     
-    func downloadEmployees() {
+    func downloadEmployees(completion: (() -> Void)? = nil) {
         guard let networkManager = self.networkManager else { return }
         self.employeesOperation = networkManager.createOperation(EmployeesOperation.self) as? EmployeesOperation
         
         guard let employeesOperation = self.employeesOperation, employeesOperation.isReadyToLoadData else { return }
         
         networkManager.requestData(operation: employeesOperation) { [weak self] employees, requestDidSucceed, error in
-            guard let sself = self else { return }
+            guard let self = self else { return }
             
-            guard let allEmployees = employees as? [Employee] else {
-                sself.errorOccured?()
+            guard let allEmployees = employees as? [Employee], requestDidSucceed else {
+                self.errorOccured?()
                 
                 return
             }
             
-            if !requestDidSucceed {
-                sself.errorOccured?()
+            if completion != nil {
+                self.isSearchRefreshCompleted = false
             }
             
-            sself.employees = allEmployees
+            self.employees = allEmployees
             
-            sself.setUpPositions()
+            self.setUpPositions()
+            
+            completion?()
         }
     }
     
@@ -114,15 +121,15 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         }
         
         guard let employees = employeesList else { return }
-
+        
         var allPositions = [String]()
         
         for employee in employees as [Employee] {
             if !allPositions.contains(employee.position) {
-               allPositions.append(employee.position)
+                allPositions.append(employee.position)
             }
         }
-
+        
         let sortedPositions = allPositions.sorted(by: { $0 < $1 })
         
         if isSearchActive {
@@ -141,7 +148,7 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
         
         let positions = isSearchActive ?  self.positionsForSearchResults : self.positions
         
-        guard let allPositions = positions else { return nil }
+        guard let allPositions = positions, positionSection < allPositions.count else { return nil }
         
         let employeesWithParticularPosition = employees.filter( { $0.position == allPositions[positionSection] })
         
@@ -197,16 +204,16 @@ extension EmployeeListViewModelImpl {
         
         self.employeesMatchingQuery = employees.filter {
             $0.name.lowercased().range(of: lowercasedSearchQuery) != nil ||
-            $0.surname.lowercased().range(of: lowercasedSearchQuery) != nil ||
-            
-            $0.contactDetails.email.lowercased().range(of: lowercasedSearchQuery) != nil ||
-            $0.contactDetails.phone?.range(of: lowercasedSearchQuery) != nil ||
-            
-            $0.position.lowercased().range(of: lowercasedSearchQuery) != nil ||
-            
-            $0.projects?.contains(where: {
-                $0.lowercased().range(of: lowercasedSearchQuery) != nil
-            }) ?? false
+                $0.surname.lowercased().range(of: lowercasedSearchQuery) != nil ||
+                
+                $0.contactDetails.email.lowercased().range(of: lowercasedSearchQuery) != nil ||
+                $0.contactDetails.phone?.range(of: lowercasedSearchQuery) != nil ||
+                
+                $0.position.lowercased().range(of: lowercasedSearchQuery) != nil ||
+                
+                $0.projects?.contains(where: {
+                    $0.lowercased().range(of: lowercasedSearchQuery) != nil
+                }) ?? false
         }
         
         setUpPositions(isSearchActive: true)

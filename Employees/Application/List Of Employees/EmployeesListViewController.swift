@@ -22,20 +22,18 @@ final class EmployeesListViewController: UIViewController {
     private var refreshControl: UIRefreshControl?
     private var activityIndicator: UIActivityIndicatorView?
     private var isSearchActive: Bool = false
+    private var currentSearchQuery: String?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setUpViewModelAndCallbacks()
-        setUpTableViewRefreshControl()
         showDefaultPlaceholderIfNeeded()
         setUpActivityIndicator()
         setUpLocalContactsCallback()
         
         setUpSearchBar()
-        
-        self.employeesTableView.delegate = self
-        self.employeesTableView.dataSource = self
+        setUpTableViewInteractions()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -88,15 +86,21 @@ private extension EmployeesListViewController {
         viewModel.employeesListUpdated = { [weak self] in
             guard let self = self else { return }
             
+            if self.isSearchActive, !viewModel.isSearchRefreshCompleted {
+                return
+            }
+            
             let employeesList = self.isSearchActive ? viewModel.employeesMatchingQuery : viewModel.employees
             
             if let employees = employeesList, employees.count > 0 {
+                print ("UPDATE EMPLOYEES LIST WHERE COUNT > 0")
                 self.reloadTable()
             }
             else {
                 let placeholderText = self.isSearchActive ?  EmployeesConstants.noResultsPlaceholder : EmployeesConstants.defaultTableViewPlaceholder
                 
                 DispatchQueue.main.async {
+                    print("UPDATE EMPLOYEES LIST with PLACEHOLDER")
                     self.employeesTableView.reloadData()
                     self.employeesTableView.showPlaceholder(message: placeholderText)
                 }
@@ -111,8 +115,10 @@ private extension EmployeesListViewController {
         
         viewModel.localContactsListUpdated = {
             guard let employees = viewModel.employees else { return }
+            
             if employees.count > 0 {
                 DispatchQueue.main.async {
+                    print("I UPDATE LOCAL CONTACTS")
                     self.employeesTableView.reloadData()
                 }
             }
@@ -168,7 +174,20 @@ private extension EmployeesListViewController {
     @objc func refreshList(_ sender: UIRefreshControl) {
         guard let viewModel = self.viewModel else { return }
         
-        viewModel.downloadEmployees()
+        let completion: (() -> Void)? = { viewModel.filterEmployeesMatching(text: self.currentSearchQuery)
+        }
+        
+//        if self.isSearchActive {
+//            viewModel.downloadEmployees() { [weak self] in
+//                guard let self = self else { return }
+//
+//                viewModel.filterEmployeesMatching(text: self.searchBar.text)
+//            }
+//        }
+//        else {
+//            viewModel.downloadEmployees()
+//        }
+        viewModel.downloadEmployees(completion: self.isSearchActive ? completion : nil)
     }
     
 }
@@ -247,11 +266,23 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         return nil
     }
     
-    private func reloadTable() {
+}
+
+private extension EmployeesListViewController {
+    
+    func reloadTable() {
         DispatchQueue.main.async {
             self.employeesTableView.hidePlaceholder()
             self.employeesTableView.reloadData()
         }
+    }
+    
+    func setUpTableViewInteractions() {
+        self.employeesTableView.delegate = self
+        self.employeesTableView.dataSource = self
+        self.employeesTableView.keyboardDismissMode = .onDrag
+        
+        setUpTableViewRefreshControl()
     }
     
 }
@@ -296,9 +327,15 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         
         self.searchBar.resignFirstResponder()
     }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
+        self.searchBar.resignFirstResponder()
+    }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let viewModel = self.viewModel else { return }
+        
+        self.currentSearchQuery = searchBar.text
         
         if self.searchBar.text == "" {
             self.isSearchActive = false
