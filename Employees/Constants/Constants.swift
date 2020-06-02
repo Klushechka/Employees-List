@@ -17,13 +17,8 @@ struct Constants {
 
 struct AlertConstants {
 
-    static let title = "Error Occured"
-    static let message = "Something went wrong. Please try again later."
-    
-    static let settingsTitle = "Go to Settings"
-    
-    static let contactsTitle = "Permission to Contacts"
-    static let contactsDescription = "Later you can to turn in System Settings."
+    static let errorTitle = "Error Occured"
+    static let generalErrorDescription = "Something went wrong. Please try again later."
     
 }
 
@@ -38,7 +33,7 @@ struct EmployeesConstants {
 
 struct DetailsConstants {
     
-    static let projectsPlaceholder = "No data about projects."
+    static let noProjectsPlaceholder = "No data about projects."
     static let projects = "Projects: "
     static let phonePlaceholder = "No data about a phone number."
     

@@ -14,7 +14,6 @@ protocol EmployeesListViewModel {
     var positions: [String]? { get }
     var employeesMatchingQuery: [Employee]? { get }
     //var localContactsNames: [String]? { get }
-    var showContactsAlert:(() -> Void)? { get set }
     
     var employeesListUpdated: (() -> Void)? { get set }
     var localContactsListUpdated: (() -> Void)? { get set }

@@ -24,6 +24,7 @@ final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel, LocalContact
     }
     
     var localContactsListUpdated: (() -> Void)?
+    var errorOccured: (() -> Void)?
     
     var showLocalContactButton: Bool {
         return isEmployeeInLocalContacts(employee: self.employee)
@@ -45,7 +46,8 @@ final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel, LocalContact
     
     func localContact(fullName: String) -> CNContact? {
         guard let localContactsService = self.localContactsService, let localContact = localContactsService.contact(with: fullName) else {
-//            self.errorOccured?()
+            self.errorOccured?()
+            
             return nil
         }
         
@@ -58,13 +60,6 @@ final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel, LocalContact
         guard let localContactsService = self.localContactsService else { return }
         
         self.localContactsNames = localContactsService.localContactsNames()
-        
-        localContactsService.permissionRequestNeeded = {
-//            self.showContactsAlert?()
-            
-            print ("I NEED PERMISSION!")
-        }
     }
-    
     
 }

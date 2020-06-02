@@ -13,10 +13,7 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     
     var employees: [Employee]? {
         didSet {
-            if self.employees != oldValue {
-                print ("LIST CHANGED")
-                self.employeesListUpdated?()
-            }
+            self.employeesListUpdated?()
         }
     }
     
@@ -52,7 +49,6 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     
     var isSearchRefreshCompleted: Bool = false
     
-    var showContactsAlert:(() -> Void)?
     var employeesListUpdated: (() -> Void)?
     var localContactsListUpdated: (() -> Void)?
     var errorOccured: (() -> Void)?
@@ -165,10 +161,6 @@ extension EmployeeListViewModelImpl {
         guard let localContactsService = self.localContactsService else { return }
         
         self.localContactsNames = localContactsService.localContactsNames()
-        
-        localContactsService.permissionRequestNeeded = {
-            self.showContactsAlert?()
-        }
     }
     
     func isEmployeeInLocalContacts(employee: Employee) -> Bool {

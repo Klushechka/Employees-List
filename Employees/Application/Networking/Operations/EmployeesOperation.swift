@@ -51,7 +51,10 @@ class EmployeesOperation: DataOperation {
             let errorToSend = receivedErrors.first(where: { $0 != nil }) ?? nil
             
             let uniqueEmployees = Array(Set(decodedEmployees))
-            sself.saveData(data: uniqueEmployees)
+            
+            if uniqueEmployees.count > 0 {
+                sself.saveData(data: uniqueEmployees)
+            }
             
             completion(uniqueEmployees, requestSucceeded, errorToSend)
         }

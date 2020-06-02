@@ -12,32 +12,21 @@ import ContactsUI
 
 final class LocalContactsService {
     
-    var permissionRequestNeeded: (() -> Void)?
     var localContacts: [CNContact]?
     var formattedContactsNames: [String]?
     
     func localContactsNames() -> [String]? {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
-            self.permissionRequestNeeded?()
             return nil
         }
-
-        // open it
-
+        
         let store = CNContactStore()
         store.requestAccess(for: .contacts) { [weak self] granted, error in
             guard let self = self else { return }
             
-            guard granted else {
-                DispatchQueue.main.async {
-                    self.permissionRequestNeeded?()
-                }
-                return
-            }
-
-            // get the contacts
-
+            guard granted else { return }
+            
             var contacts = [CNContact]()
             let request = CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
             do {
@@ -47,8 +36,6 @@ final class LocalContactsService {
             } catch {
                 print(error)
             }
-
-            // do something with the contacts array (e.g. print the names)
             
             self.localContacts = contacts
             

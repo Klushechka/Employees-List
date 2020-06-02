@@ -25,6 +25,7 @@ final class EmployeeDetailsViewController: UIViewController {
         
         setUpLabels()
         showLocalContactButtonIfNeeded()
+        setUpErrorCallback()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -45,7 +46,7 @@ final class EmployeeDetailsViewController: UIViewController {
         setupOptionalLabels()
     }
     
-    func setupOptionalLabels() {
+    private func setupOptionalLabels() {
         setUpProjectsLabel()
         setUpPhoneLabel()
     }
@@ -57,7 +58,7 @@ final class EmployeeDetailsViewController: UIViewController {
             self.projectsLabel.text = "\(DetailsConstants.projects) \(projects.joined(separator: ", "))"
         }
         else {
-            self.projectsLabel.text = DetailsConstants.projectsPlaceholder
+            self.projectsLabel.text = DetailsConstants.noProjectsPlaceholder
             self.projectsLabel.textColor = .lightGray
         }
     }
@@ -72,7 +73,6 @@ final class EmployeeDetailsViewController: UIViewController {
             self.phoneLabel.text = DetailsConstants.phonePlaceholder
             
             self.phoneLabel.textColor = .lightGray
-            
         }
     }
     
@@ -103,6 +103,22 @@ private extension EmployeeDetailsViewController {
         
         let contactVC = CNContactViewController(for: contact)
         navigationController.pushViewController(contactVC, animated: true)
+    }
+    
+}
+
+private extension EmployeeDetailsViewController {
+    
+    func setUpErrorCallback() {
+        guard let viewModel = self.viewModel else { return }
+        
+        viewModel.errorOccured = { [weak self] in
+            guard let self = self else { return }
+            
+            DispatchQueue.main.sync {
+                self.showDefaultAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
+            }
+        }
     }
     
 }

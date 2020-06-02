@@ -18,16 +18,4 @@ extension UIViewController {
         present(alert, animated: true, completion: nil)
     }
     
-    func showContactsSettingsAlert() {
-        let alert = UIAlertController(title: AlertConstants.contactsTitle, message: AlertConstants.contactsDescription, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "Go to Settings", style: .default) { _ in
-            let url = URL(string: UIApplication.openSettingsURLString)!
-            UIApplication.shared.open(url)
-        })
-        
-        alert.addAction(UIAlertAction(title: Constants.cancel, style: .cancel))
-        
-        present(alert, animated: true)
-    }
-    
 }

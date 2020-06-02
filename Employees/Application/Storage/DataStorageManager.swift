@@ -14,13 +14,15 @@ enum FileName: String {
 
 final class DataStorageManager {
     
-    func saveData<T: Encodable>(_ data: T, fileName: FileName) {
+    func saveData<T: Encodable>(_ data: T?, fileName: FileName) {
         let url = fileURL(name: fileName)
         
+        guard let dataToSave = data else { return }
+        
         do {
-            let jsonEncodedData = try JSONEncoder().encode(data as? [Employee])
+            let jsonEncodedData = try JSONEncoder().encode(dataToSave)
             
-            if FileManager.default.fileExists(atPath: url.path) {
+            if  FileManager.default.fileExists(atPath: url.path) {
                 try FileManager.default.removeItem(at: url)
             }
             
@@ -39,13 +41,13 @@ final class DataStorageManager {
         }
         
         if let data = FileManager.default.contents(atPath: url.path) {
-                   let decoder = JSONDecoder()
-                   do {
-                    let model = try decoder.decode(T.self, from: data)
-                       return model
-                   } catch {
-                       print("Couldn't retrieve the data \(error)")
-                   }
+            let decoder = JSONDecoder()
+            do {
+                let model = try decoder.decode(T.self, from: data)
+                return model
+            } catch {
+                print("Couldn't retrieve the data \(error)")
+            }
         }
         
         return nil

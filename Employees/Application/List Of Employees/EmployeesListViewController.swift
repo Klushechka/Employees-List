@@ -30,7 +30,6 @@ final class EmployeesListViewController: UIViewController {
         setUpViewModelAndCallbacks()
         showDefaultPlaceholderIfNeeded()
         setUpActivityIndicator()
-        setUpLocalContactsCallback()
         
         setUpSearchBar()
         setUpTableViewInteractions()
@@ -70,12 +69,12 @@ private extension EmployeesListViewController {
         guard let viewModel = self.viewModel else { return }
         
         viewModel.errorOccured = { [weak self] in
-            guard let sself = self else { return }
+            guard let self = self else { return }
             
-            sself.stopSpinnersAnimation()
-            
-            DispatchQueue.main.async {
-                sself.showDefaultAlert(title: AlertConstants.title, message: AlertConstants.message, buttonLabel: Constants.closeButton)
+            DispatchQueue.main.sync {
+                self.stopSpinnersAnimation()
+                
+                self.showDefaultAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
             }
         }
     }
@@ -93,14 +92,12 @@ private extension EmployeesListViewController {
             let employeesList = self.isSearchActive ? viewModel.employeesMatchingQuery : viewModel.employees
             
             if let employees = employeesList, employees.count > 0 {
-                print ("UPDATE EMPLOYEES LIST WHERE COUNT > 0")
                 self.reloadTable()
             }
             else {
                 let placeholderText = self.isSearchActive ?  EmployeesConstants.noResultsPlaceholder : EmployeesConstants.defaultTableViewPlaceholder
                 
                 DispatchQueue.main.async {
-                    print("UPDATE EMPLOYEES LIST with PLACEHOLDER")
                     self.employeesTableView.reloadData()
                     self.employeesTableView.showPlaceholder(message: placeholderText)
                 }
@@ -118,7 +115,6 @@ private extension EmployeesListViewController {
             
             if employees.count > 0 {
                 DispatchQueue.main.async {
-                    print("I UPDATE LOCAL CONTACTS")
                     self.employeesTableView.reloadData()
                 }
             }
@@ -166,7 +162,6 @@ private extension EmployeesListViewController {
         DispatchQueue.main.async {
             self.refreshControl?.endRefreshing()
             self.activityIndicator?.stopAnimating()
-            
             self.activityIndicator?.hidesWhenStopped = true
         }
     }
@@ -177,16 +172,6 @@ private extension EmployeesListViewController {
         let completion: (() -> Void)? = { viewModel.filterEmployeesMatching(text: self.currentSearchQuery)
         }
         
-//        if self.isSearchActive {
-//            viewModel.downloadEmployees() { [weak self] in
-//                guard let self = self else { return }
-//
-//                viewModel.filterEmployeesMatching(text: self.searchBar.text)
-//            }
-//        }
-//        else {
-//            viewModel.downloadEmployees()
-//        }
         viewModel.downloadEmployees(completion: self.isSearchActive ? completion : nil)
     }
     
@@ -289,14 +274,6 @@ private extension EmployeesListViewController {
 
 private extension EmployeesListViewController {
     
-    func setUpLocalContactsCallback() {
-        guard let viewModel = self.viewModel else { return }
-        
-        viewModel.showContactsAlert = {
-            self.showContactsSettingsAlert()
-        }
-    }
-    
     func openLocalContact(with fullName: String) {
         guard let viewModel = self.viewModel, let navigationController = self.navigationController, let contact = viewModel.localContact(fullName: fullName) else { return }
         
@@ -311,7 +288,7 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
     func setUpSearchBar() {
         self.searchBar.placeholder = "Search"
         self.searchBar.delegate = self
-        self.searchBar.showsCancelButton = true
+        self.searchBar.showsCancelButton = false
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -326,6 +303,7 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         employeesTableView.reloadData()
         
         self.searchBar.resignFirstResponder()
+        self.searchBar.showsCancelButton = false
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
@@ -343,6 +321,7 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         }
         else {
             self.isSearchActive = true
+            self.searchBar.showsCancelButton = true
             
             viewModel.filterEmployeesMatching(text: searchBar.text)
         }

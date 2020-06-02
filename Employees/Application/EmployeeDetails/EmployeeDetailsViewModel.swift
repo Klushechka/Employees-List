@@ -12,4 +12,6 @@ protocol EmployeeDetailsViewModel {
     init(with employee: Employee)
     
     var employee: Employee { get }
+    
+    var errorOccured: (() -> Void)? { get set }
 }
