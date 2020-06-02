@@ -13,6 +13,7 @@ enum TartuEndpoint: String {
 }
 
 extension TartuEndpoint: Endpoint {
+    
     var baseURL: URL {
         return URL(string: "https://tartu-jobapp.aw.ee/")!
     }

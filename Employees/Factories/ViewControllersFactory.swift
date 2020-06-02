@@ -19,7 +19,7 @@ enum ViewControllerType {
     case employeesList, employeeDetails
 }
 
-extension ViewControllerType {
+private extension ViewControllerType {
     
     func storyboardRepresentation() -> StoryboardRepresentation {
         switch self {
@@ -34,7 +34,7 @@ extension ViewControllerType {
 
 final class ViewControllerFactory {
     
-    static func viewController(for viewControllerType: ViewControllerType) -> UIViewController {
+    func viewController(for viewControllerType: ViewControllerType) -> UIViewController {
         let metadata = viewControllerType.storyboardRepresentation()
         let storyboard = UIStoryboard(name: metadata.storyboardName, bundle: metadata.bundle)
         let viewController = storyboard.instantiateViewController(withIdentifier: metadata.storyboardId)

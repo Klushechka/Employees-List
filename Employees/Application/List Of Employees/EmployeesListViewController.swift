@@ -28,7 +28,7 @@ final class EmployeesListViewController: UIViewController {
         
         setUpViewModelAndCallbacks()
         setUpTableViewRefreshControl()
-        showPlaceholderOrEmployeesTable()
+        showDefaultPlaceholderIfNeeded()
         setUpActivityIndicator()
         setUpLocalContactsCallback()
         
@@ -86,12 +86,19 @@ private extension EmployeesListViewController {
         guard let viewModel = self.viewModel else { return }
         
         viewModel.employeesListUpdated = { [weak self] in
-            guard let self = self, let employees = viewModel.employees else { return }
+            guard let self = self else { return }
             
-            if employees.count > 0 {
+            let employeesList = self.isSearchActive ? viewModel.employeesMatchingQuery : viewModel.employees
+            
+            if let employees = employeesList, employees.count > 0 {
+                self.reloadTable()
+            }
+            else {
+                let placeholderText = self.isSearchActive ?  EmployeesConstants.noResultsPlaceholder : EmployeesConstants.defaultTableViewPlaceholder
+                
                 DispatchQueue.main.async {
-                    self.employeesTableView.hidePlaceholder()
                     self.employeesTableView.reloadData()
+                    self.employeesTableView.showPlaceholder(message: placeholderText)
                 }
             }
             
@@ -116,11 +123,11 @@ private extension EmployeesListViewController {
 
 private extension EmployeesListViewController {
     
-    func showPlaceholderOrEmployeesTable() {
+    func showDefaultPlaceholderIfNeeded() {
         guard let viewModel = self.viewModel, let employees = viewModel.employees, employees.count > 0 else {
             
             DispatchQueue.main.async {
-                self.employeesTableView.showPlaceholder(message: EmployeesConstants.tableViewPlaceholderText)
+                self.employeesTableView.showPlaceholder(message: EmployeesConstants.defaultTableViewPlaceholder)
             }
             
             return
@@ -172,7 +179,7 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         tableView.deselectRow(at: indexPath, animated: true)
         guard let navigationController = self.navigationController else { return }
         
-        guard let employeeDetailsVC = ViewControllerFactory.viewController(for: .employeeDetails) as? EmployeeDetailsViewController, let viewModel = self.viewModel else { return }
+        guard let employeeDetailsVC = ViewControllerFactory().viewController(for: .employeeDetails) as? EmployeeDetailsViewController, let viewModel = self.viewModel else { return }
         
         guard let employeesInSection =  viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else { return }
         employeeDetailsVC.viewModel = EmployeeDetailsViewModelImpl(with: employeesInSection[indexPath.row])
@@ -240,6 +247,13 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
         return nil
     }
     
+    private func reloadTable() {
+        DispatchQueue.main.async {
+            self.employeesTableView.hidePlaceholder()
+            self.employeesTableView.reloadData()
+        }
+    }
+    
 }
 
 private extension EmployeesListViewController {
@@ -279,14 +293,22 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         self.isSearchActive = false
         self.searchBar.text = ""
         employeesTableView.reloadData()
+        
+        self.searchBar.resignFirstResponder()
     }
 
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let viewModel = self.viewModel else { return }
         
-        self.isSearchActive = true
-        
-        viewModel.filterEmployeesMatching(text: searchBar.text)
+        if self.searchBar.text == "" {
+            self.isSearchActive = false
+            employeesTableView.reloadData()
+        }
+        else {
+            self.isSearchActive = true
+            
+            viewModel.filterEmployeesMatching(text: searchBar.text)
+        }
     }
     
     func employeeFilteredIfNeeded(for indexPath: IndexPath) -> Employee? {
@@ -301,6 +323,5 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         
         return nil
     }
-    
     
 }

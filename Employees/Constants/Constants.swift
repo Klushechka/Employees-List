@@ -1,5 +1,5 @@
 //
-//  CommonConstants.swift
+//  Constants.swift
 //  Employees
 //
 //  Created by Olga Kliushkina on 29.05.2020.
@@ -23,14 +23,16 @@ struct AlertConstants {
     static let settingsTitle = "Go to Settings"
     
     static let contactsTitle = "Permission to Contacts"
-    static let contactsDescription = "This app needs access to contacts in order to ..."
+    static let contactsDescription = "Later you can to turn in System Settings."
     
 }
 
 struct EmployeesConstants {
     
-    static let tableViewPlaceholderText = "There are no employees yet. Swipe down to refresh the list."
+    static let defaultTableViewPlaceholder = "There are no employees yet. Swipe down to refresh the list."
     static let refreshControlText = "The list is being refreshed."
+    
+    static let noResultsPlaceholder = "There are no results matching this search query."
     
 }
 

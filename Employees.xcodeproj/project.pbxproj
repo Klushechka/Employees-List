@@ -17,7 +17,6 @@
 		69533E80247E6EC4001AC751 /* Endpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E7F247E6EC4001AC751 /* Endpoint.swift */; };
 		69533E88247E7605001AC751 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E87247E7605001AC751 /* NetworkService.swift */; };
 		69533E8B247E7A73001AC751 /* NetworkServiceImpl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E8A247E7A73001AC751 /* NetworkServiceImpl.swift */; };
-		69533E8E247E85DE001AC751 /* ResponseHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E8D247E85DE001AC751 /* ResponseHandler.swift */; };
 		69533E91247E8693001AC751 /* TartuEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E90247E8693001AC751 /* TartuEndpoint.swift */; };
 		69533E93247E86ED001AC751 /* TallinnEndpoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69533E92247E86ED001AC751 /* TallinnEndpoint.swift */; };
 		69533E96247EAE1D001AC751 /* EmployeesListViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69533E95247EAE1C001AC751 /* EmployeesListViewController.storyboard */; };
@@ -31,7 +30,7 @@
 		69B7AAD5248157B400716B77 /* NetworkManagerProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7AAD4248157B400716B77 /* NetworkManagerProtocol.swift */; };
 		69B7AAD924817BB300716B77 /* UIViewController+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7AAD824817BB300716B77 /* UIViewController+Extensions.swift */; };
 		69B7AADB24817DD300716B77 /* EmployeesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7AADA24817DD300716B77 /* EmployeesListViewModel.swift */; };
-		69B7AADE24817ED000716B77 /* CommonConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7AADD24817ED000716B77 /* CommonConstants.swift */; };
+		69B7AADE24817ED000716B77 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69B7AADD24817ED000716B77 /* Constants.swift */; };
 		69CF072C2482BD37002BA691 /* DataStorageManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF072B2482BD37002BA691 /* DataStorageManager.swift */; };
 		69CF072F2482ECC7002BA691 /* EmployeeDetailsViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 69CF072E2482ECC7002BA691 /* EmployeeDetailsViewController.storyboard */; };
 		69CF07312482ECD4002BA691 /* EmployeeDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69CF07302482ECD4002BA691 /* EmployeeDetailsViewController.swift */; };
@@ -68,7 +67,6 @@
 		69533E7F247E6EC4001AC751 /* Endpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoint.swift; sourceTree = "<group>"; };
 		69533E87247E7605001AC751 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
 		69533E8A247E7A73001AC751 /* NetworkServiceImpl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkServiceImpl.swift; sourceTree = "<group>"; };
-		69533E8D247E85DE001AC751 /* ResponseHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ResponseHandler.swift; sourceTree = "<group>"; };
 		69533E90247E8693001AC751 /* TartuEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TartuEndpoint.swift; sourceTree = "<group>"; };
 		69533E92247E86ED001AC751 /* TallinnEndpoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TallinnEndpoint.swift; sourceTree = "<group>"; };
 		69533E95247EAE1C001AC751 /* EmployeesListViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EmployeesListViewController.storyboard; sourceTree = "<group>"; };
@@ -82,7 +80,7 @@
 		69B7AAD4248157B400716B77 /* NetworkManagerProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManagerProtocol.swift; sourceTree = "<group>"; };
 		69B7AAD824817BB300716B77 /* UIViewController+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Extensions.swift"; sourceTree = "<group>"; };
 		69B7AADA24817DD300716B77 /* EmployeesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeesListViewModel.swift; sourceTree = "<group>"; };
-		69B7AADD24817ED000716B77 /* CommonConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonConstants.swift; sourceTree = "<group>"; };
+		69B7AADD24817ED000716B77 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		69CF072B2482BD37002BA691 /* DataStorageManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataStorageManager.swift; sourceTree = "<group>"; };
 		69CF072E2482ECC7002BA691 /* EmployeeDetailsViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = EmployeeDetailsViewController.storyboard; sourceTree = "<group>"; };
 		69CF07302482ECD4002BA691 /* EmployeeDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeDetailsViewController.swift; sourceTree = "<group>"; };
@@ -135,7 +133,7 @@
 			children = (
 				69CF073B248420E4002BA691 /* Application */,
 				69B7AACF2481464600716B77 /* Factories */,
-				69B7AADC24817EA100716B77 /* Common Constants */,
+				69B7AADC24817EA100716B77 /* Constants */,
 				69533EA8247FB555001AC751 /* Utils */,
 				69533EAD247FE449001AC751 /* Extensions */,
 				69CF0739248420B2002BA691 /* Supporting Files */,
@@ -177,7 +175,6 @@
 		69533E89247E7A30001AC751 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				69533E8D247E85DE001AC751 /* ResponseHandler.swift */,
 				69533E8A247E7A73001AC751 /* NetworkServiceImpl.swift */,
 				69533E87247E7605001AC751 /* NetworkService.swift */,
 			);
@@ -239,12 +236,12 @@
 			path = Factories;
 			sourceTree = "<group>";
 		};
-		69B7AADC24817EA100716B77 /* Common Constants */ = {
+		69B7AADC24817EA100716B77 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				69B7AADD24817ED000716B77 /* CommonConstants.swift */,
+				69B7AADD24817ED000716B77 /* Constants.swift */,
 			);
-			path = "Common Constants";
+			path = Constants;
 			sourceTree = "<group>";
 		};
 		69CF072A2482BD20002BA691 /* Storage */ = {
@@ -421,7 +418,6 @@
 			files = (
 				69B7AAD5248157B400716B77 /* NetworkManagerProtocol.swift in Sources */,
 				69533E91247E8693001AC751 /* TartuEndpoint.swift in Sources */,
-				69533E8E247E85DE001AC751 /* ResponseHandler.swift in Sources */,
 				69CF07332483C555002BA691 /* EmployeeDetailsViewModel.swift in Sources */,
 				69533E8B247E7A73001AC751 /* NetworkServiceImpl.swift in Sources */,
 				69CF07412484357F002BA691 /* EmployeeCell.swift in Sources */,
@@ -441,7 +437,7 @@
 				69533E9E247ED2C9001AC751 /* EmployeesListViewModelImpl.swift in Sources */,
 				69CF07352483C561002BA691 /* EmployeeDetailsViewModelImpl.swift in Sources */,
 				69533E9A247EB02D001AC751 /* EmployeesListViewController.swift in Sources */,
-				69B7AADE24817ED000716B77 /* CommonConstants.swift in Sources */,
+				69B7AADE24817ED000716B77 /* Constants.swift in Sources */,
 				69B7AAD32481517B00716B77 /* NetworkingManager.swift in Sources */,
 				69533E93247E86ED001AC751 /* TallinnEndpoint.swift in Sources */,
 				69CF074424850A3C002BA691 /* LocalContactsViewModel.swift in Sources */,

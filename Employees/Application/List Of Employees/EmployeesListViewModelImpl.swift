@@ -193,14 +193,21 @@ extension EmployeeListViewModelImpl {
             return
         }
         
-        self.employeesMatchingQuery = employees.filter { $0.name.lowercased().range(of: text.lowercased()) != nil ||
-        $0.surname.lowercased().range(of: text.lowercased()) != nil ||
-           
-            $0.contactDetails.phone?.lowercased().range(of: text.lowercased()) != nil ||
-            $0.contactDetails.email.lowercased().range(of: text.lowercased()) != nil
-        }
+        let lowercasedSearchQuery = text.lowercased()
         
-        print("EMPLOYEES MATCHING QUERY \(text): \(self.employeesMatchingQuery)")
+        self.employeesMatchingQuery = employees.filter {
+            $0.name.lowercased().range(of: lowercasedSearchQuery) != nil ||
+            $0.surname.lowercased().range(of: lowercasedSearchQuery) != nil ||
+            
+            $0.contactDetails.email.lowercased().range(of: lowercasedSearchQuery) != nil ||
+            $0.contactDetails.phone?.range(of: lowercasedSearchQuery) != nil ||
+            
+            $0.position.lowercased().range(of: lowercasedSearchQuery) != nil ||
+            
+            $0.projects?.contains(where: {
+                $0.lowercased().range(of: lowercasedSearchQuery) != nil
+            }) ?? false
+        }
         
         setUpPositions(isSearchActive: true)
     }

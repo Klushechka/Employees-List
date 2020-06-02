@@ -13,6 +13,7 @@ enum TallinnEndpoint: String {
 }
 
 extension TallinnEndpoint: Endpoint {
+    
     var baseURL: URL {
         return URL(string: "https://tallinn-jobapp.aw.ee/")!
     }

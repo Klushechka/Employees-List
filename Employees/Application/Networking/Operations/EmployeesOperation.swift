@@ -10,22 +10,16 @@ import Foundation
 
 class EmployeesOperation: DataOperation {
     
-    public typealias Completion = ((_ employees: [Employee]?) -> ())
-    
     private let networkService: NetworkService
-    private let responseHandler: NetworkResponseHandler
     private let dataStorageManager: DataStorageManager
     private(set) var isReadyToLoadData: Bool = true
     
-    required init(networkService: NetworkService, responseHandler: NetworkResponseHandler, dataStorageManager: DataStorageManager) {
+    required init(networkService: NetworkService, dataStorageManager: DataStorageManager) {
         self.networkService = networkService
-        self.responseHandler = responseHandler
         self.dataStorageManager = dataStorageManager
     }
-    
-   // func requestData(completion: @escaping ((Array<Any>?), Bool, Error?) -> ()) {
         
-    func requestData(completion: @escaping ((Array<Any>?), Bool, Error?) -> ()) {
+    func requestData(completion: @escaping (([Any]?), Bool, Error?) -> ()) {
         let tallinnEndpoint: TallinnEndpoint = .employeeList
         let tartuEndpoint: TartuEndpoint = .employeeList
         
@@ -43,12 +37,14 @@ class EmployeesOperation: DataOperation {
                     decodedEmployees.append(contentsOf: decodedData)
                     requestSucceeded = true
                 }
-                else if let response = result.response as? HTTPURLResponse, response.statusCode != 200 {
+                else {
                     requestSucceeded = false
                 }
                 
                 if let error = result.error {
                     receivedErrors.append(error)
+                    
+                    print(error)
                 }
             }
             
@@ -62,16 +58,14 @@ class EmployeesOperation: DataOperation {
     }
     
     private func decode(data: Data?) -> [Employee]? {
-        guard let data = data else {
-            return nil
-        }
+        guard let data = data else { return nil }
         do {
             let rootData = try JSONDecoder().decode(Root.self, from: data)
             
             return rootData.employees
         }
         catch {
-            print (NetworkResponse.unableToDecode.rawValue)
+            print(error)
             
             return nil
         }
@@ -81,30 +75,8 @@ class EmployeesOperation: DataOperation {
 
 extension EmployeesOperation {
     
-    private func handle(response: HTTPURLResponse?) {
-        guard let response = response else { return }
-            
-        let result = self.responseHandler.handleNetworkResponse(response)
-        
-        switch result {
-        case .failure(let errorDescription): print(errorDescription)
-
-        default: break
-        }
-    }
-    
-}
-
-extension EmployeesOperation {
-    
-    func saveData<T>(data: T) where T : Encodable {
+    internal func saveData<T>(data: T) where T : Encodable {
         self.dataStorageManager.saveData(data, fileName: .employees)
-        
-        //fetchData()
-    }
-    
-    func fetchData() {
-        print ("FETCHED EMPLOYEES: \(String(describing: self.dataStorageManager.retrieveData(fileName: .employees, dataType: [Employee].self)))")
     }
     
 }

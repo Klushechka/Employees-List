@@ -35,7 +35,7 @@ final class NetworkServiceImpl: NetworkService {
             
             let innerTask = self?.session.dataTask(with: secondRequest) { secondData, secondResponse, secondError  in
                 completion([(firstData, firstResponse, firstError),
-                    (secondData, secondResponse, secondError)])
+                            (secondData, secondResponse, secondError)])
                 do {
                     group.leave()
                 }

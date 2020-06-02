@@ -10,8 +10,7 @@ import Foundation
 
 protocol NetworkManagerProtocol {
     func createOperation(_ operationClass: DataOperation.Type) -> DataOperation
-    func requestData(operation: DataOperation, completion: @escaping ((Array<Any>?), Bool, Error?) -> ())
+    func requestData(operation: DataOperation, completion: @escaping (([Any]?), Bool, Error?) -> ())
     
     func retrieveData<T: Decodable>(fileName: FileName, dataType: T.Type) -> T?
-    
 }

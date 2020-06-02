@@ -18,7 +18,7 @@ extension UITableView {
         
         let messageLabel = UILabel(frame: rect)
         messageLabel.text = message
-        messageLabel.textColor = .black
+        messageLabel.textColor = .lightGray
         messageLabel.numberOfLines = 0
         messageLabel.textAlignment = .center
         messageLabel.sizeToFit()

@@ -20,7 +20,6 @@ final class LocalContactsService {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
             self.permissionRequestNeeded?()
-            //presentSettingsActionSheet()
             return nil
         }
 
@@ -40,7 +39,7 @@ final class LocalContactsService {
             // get the contacts
 
             var contacts = [CNContact]()
-            let request = CNContactFetchRequest(keysToFetch: [CNContactIdentifierKey as NSString, CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
+            let request = CNContactFetchRequest(keysToFetch: [CNContactFormatter.descriptorForRequiredKeys(for: .fullName)])
             do {
                 try store.enumerateContacts(with: request) { contact, stop in
                     contacts.append(contact)
@@ -76,10 +75,10 @@ final class LocalContactsService {
             try contactStore.enumerateContacts(with: request) {
                 (contact, cursor) -> Void in
                 results.append(contact)
-                }
+            }
         }
         catch{
-            print("Handle the error please")
+            print(error)
         }
         
         return results.first
