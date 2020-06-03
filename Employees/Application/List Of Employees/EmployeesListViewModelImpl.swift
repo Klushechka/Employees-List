@@ -160,7 +160,11 @@ extension EmployeeListViewModelImpl {
         
         guard let localContactsService = self.localContactsService else { return }
         
-        self.localContactsNames = localContactsService.localContactsNames()
+        localContactsService.localContactsNames { [weak self] localContactsNames in
+            if let self = self {
+                self.localContactsNames = localContactsNames
+            }
+        }
     }
     
     func isEmployeeInLocalContacts(employee: Employee) -> Bool {

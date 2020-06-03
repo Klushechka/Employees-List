@@ -12,19 +12,14 @@ import ContactsUI
 
 final class LocalContactsService {
     
-    var localContacts: [CNContact]?
-    var formattedContactsNames: [String]?
-    
-    func localContactsNames() -> [String]? {
+    func localContactsNames(completion: @escaping (([String]?) -> Void)) {
         let status = CNContactStore.authorizationStatus(for: .contacts)
         if status == .denied || status == .restricted {
-            return nil
+            return
         }
         
         let store = CNContactStore()
-        store.requestAccess(for: .contacts) { [weak self] granted, error in
-            guard let self = self else { return }
-            
+        store.requestAccess(for: .contacts) { granted, error in
             guard granted else { return }
             
             var contacts = [CNContact]()
@@ -37,18 +32,14 @@ final class LocalContactsService {
                 print(error)
             }
             
-            self.localContacts = contacts
-            
             let formatter = CNContactFormatter()
             formatter.style = .fullName
             
             let formattedContacts: [String]? = contacts.compactMap { formatter.string(from: $0)?.lowercased()
             }
             
-            self.formattedContactsNames = formattedContacts
+            completion(formattedContacts)
         }
-        
-        return formattedContactsNames
     }
     
     func contact(with fullName: String) -> CNContact? {
