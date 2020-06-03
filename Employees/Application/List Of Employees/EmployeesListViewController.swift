@@ -179,13 +179,14 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        guard let navigationController = self.navigationController else { return }
+        guard let employeesInSection =  self.viewModel?.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive),
+            let employeeDetailsVC = ViewControllerFactory().viewController(for: .employeeDetails) as? EmployeeDetailsViewController else {
+                return
+        }
         
-        guard let employeeDetailsVC = ViewControllerFactory().viewController(for: .employeeDetails) as? EmployeeDetailsViewController, let viewModel = self.viewModel else { return }
-        
-        guard let employeesInSection =  viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else { return }
         employeeDetailsVC.viewModel = EmployeeDetailsViewModelImpl(with: employeesInSection[indexPath.row])
-        navigationController.pushViewController(employeeDetailsVC, animated: true)
+        
+        self.navigationController?.pushViewController(employeeDetailsVC, animated: true)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -196,11 +197,11 @@ extension EmployeesListViewController: UITableViewDelegate, UITableViewDataSourc
             cell = tableView.dequeueReusableCell(withIdentifier: EmployeeCell.identifier) as? EmployeeCell
         }
         
-        guard let viewModel = self.viewModel, let employeeCell = cell else {
+        guard let viewModel = self.viewModel,
+            let employeeCell = cell,
+            let fullEmployeesList = viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else {
                 return UITableViewCell()
         }
-        
-        guard let fullEmployeesList = viewModel.employeesWithPosition(positionSection: indexPath.section, isSearchActive: self.isSearchActive) else { return UITableViewCell() }
         
         let employee = fullEmployeesList[indexPath.row]
         
@@ -309,7 +310,7 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
         self.searchBar.resignFirstResponder()
     }
-
+    
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         guard let viewModel = self.viewModel else { return }
         
