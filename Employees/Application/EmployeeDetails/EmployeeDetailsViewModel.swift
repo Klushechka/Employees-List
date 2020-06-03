@@ -12,6 +12,7 @@ protocol EmployeeDetailsViewModel {
     init(with employee: Employee)
     
     var employee: Employee { get }
+    var showLocalContactButton: Bool { get }
     
     var errorOccured: (() -> Void)? { get set }
 }

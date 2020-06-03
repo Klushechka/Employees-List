@@ -17,7 +17,6 @@ final class EmployeesListViewController: UIViewController {
     @IBOutlet weak var employeesTableView: UITableView!
     
     private var viewModel: EmployeeListViewModelImpl?
-    private var searchController: UISearchController?
     
     private var refreshControl: UIRefreshControl?
     private var activityIndicator: UIActivityIndicatorView?
@@ -89,16 +88,15 @@ private extension EmployeesListViewController {
                 return
             }
             
-            let employeesList = self.isSearchActive ? viewModel.employeesMatchingQuery : viewModel.employees
+            let employees = self.isSearchActive ? viewModel.employeesMatchingQuery : viewModel.employees
             
-            if let employees = employeesList, employees.count > 0 {
+            if let employeesToShow = employees, employeesToShow.count > 0 {
                 self.reloadTable()
             }
             else {
                 let placeholderText = self.isSearchActive ?  EmployeesConstants.noResultsPlaceholder : EmployeesConstants.defaultTableViewPlaceholder
                 
                 DispatchQueue.main.async {
-                    self.employeesTableView.reloadData()
                     self.employeesTableView.showPlaceholder(message: placeholderText)
                 }
             }
@@ -289,6 +287,10 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         self.searchBar.placeholder = "Search"
         self.searchBar.delegate = self
         self.searchBar.showsCancelButton = false
+        
+        self.navigationController?.navigationBar.barTintColor = .white
+        self.searchBar.backgroundColor = self.navigationController?.navigationBar.barTintColor
+        self.searchBar.backgroundImage = UIImage()
     }
     
     func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
@@ -296,14 +298,12 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
     }
     
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        guard let employeesTableView = self.employeesTableView else { return }
-        
         self.isSearchActive = false
         self.searchBar.text = ""
-        employeesTableView.reloadData()
-        
         self.searchBar.resignFirstResponder()
         self.searchBar.showsCancelButton = false
+        
+        reloadTable()
     }
     
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar)  {
@@ -317,7 +317,8 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
         
         if self.searchBar.text == "" {
             self.isSearchActive = false
-            employeesTableView.reloadData()
+            
+            reloadTable()
         }
         else {
             self.isSearchActive = true

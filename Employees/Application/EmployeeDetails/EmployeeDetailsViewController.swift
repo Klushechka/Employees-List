@@ -11,6 +11,7 @@ import UIKit
 import ContactsUI
 
 final class EmployeeDetailsViewController: UIViewController {
+    
     @IBOutlet weak var nameAndSurnameLabel: UILabel!
     @IBOutlet weak var positionLabel: UILabel!
     @IBOutlet weak var phoneLabel: UILabel!
@@ -43,12 +44,14 @@ final class EmployeeDetailsViewController: UIViewController {
         self.positionLabel.text = viewModel.employee.position
         self.emailLabel.text = viewModel.employee.contactDetails.email
         
+        self.openLocalContactsButton.setTitle(DetailsConstants.infoInContacts, for: .normal)
+        
         setupOptionalLabels()
     }
     
     private func setupOptionalLabels() {
-        setUpProjectsLabel()
         setUpPhoneLabel()
+        setUpProjectsLabel()
     }
     
     private func setUpProjectsLabel() {

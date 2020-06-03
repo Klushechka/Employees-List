@@ -38,10 +38,10 @@ final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel, LocalContact
     
     func isEmployeeInLocalContacts(employee: Employee) -> Bool {
         guard let localContactsNames = self.localContactsNames else { return false }
-         
-         let fullName = String("\(employee.name) \(employee.surname)").lowercased()
-         
-         return localContactsNames.contains(fullName)
+        
+        let fullName = String("\(employee.name) \(employee.surname)").lowercased()
+        
+        return localContactsNames.contains(fullName)
     }
     
     func localContact(fullName: String) -> CNContact? {
@@ -59,9 +59,9 @@ final class EmployeeDetailsViewModelImpl: EmployeeDetailsViewModel, LocalContact
         
         guard let localContactsService = self.localContactsService else { return }
         
-        localContactsService.localContactsNames { [weak self] localContactsNames in
+        localContactsService.localContactsNames { [weak self] fetchedNames in
             if let self = self {
-                self.localContactsNames = localContactsNames
+                self.localContactsNames = fetchedNames
             }
         }
     }

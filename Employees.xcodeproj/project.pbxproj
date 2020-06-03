@@ -132,9 +132,6 @@
 			isa = PBXGroup;
 			children = (
 				69CF073B248420E4002BA691 /* Application */,
-				69B7AACF2481464600716B77 /* Factories */,
-				69B7AADC24817EA100716B77 /* Constants */,
-				69533EAD247FE449001AC751 /* Extensions */,
 				69CF0739248420B2002BA691 /* Supporting Files */,
 				69CF073A248420B9002BA691 /* Resources */,
 			);
@@ -277,6 +274,7 @@
 		69CF073A248420B9002BA691 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				69B7AADC24817EA100716B77 /* Constants */,
 				69533E60247E58CA001AC751 /* Assets.xcassets */,
 				69533E62247E58CA001AC751 /* LaunchScreen.storyboard */,
 			);
@@ -292,6 +290,8 @@
 				69533E79247E59B5001AC751 /* Entities */,
 				69CF07362483F65B002BA691 /* Local Contacts Service */,
 				69CF072A2482BD20002BA691 /* Storage */,
+				69533EAD247FE449001AC751 /* Extensions */,
+				69B7AACF2481464600716B77 /* Factories */,
 			);
 			path = Application;
 			sourceTree = "<group>";

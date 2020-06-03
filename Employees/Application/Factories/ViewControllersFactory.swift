@@ -38,6 +38,7 @@ final class ViewControllerFactory {
         let metadata = viewControllerType.storyboardRepresentation()
         let storyboard = UIStoryboard(name: metadata.storyboardName, bundle: metadata.bundle)
         let viewController = storyboard.instantiateViewController(withIdentifier: metadata.storyboardId)
+        
         return viewController
     }
     

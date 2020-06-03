@@ -25,6 +25,8 @@ extension UITableView {
         
         self.backgroundView = messageLabel
         self.separatorStyle = .none
+        
+        self.reloadData()
     }
     
     func hidePlaceholder() {

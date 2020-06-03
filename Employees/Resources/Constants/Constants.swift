@@ -24,7 +24,7 @@ struct AlertConstants {
 
 struct EmployeesConstants {
     
-    static let defaultTableViewPlaceholder = "There are no employees yet. Swipe down to refresh the list."
+    static let defaultTableViewPlaceholder = "There are no employees to show yet."
     static let refreshControlText = "The list is being refreshed."
     
     static let noResultsPlaceholder = "There are no results matching this search query."
@@ -36,5 +36,6 @@ struct DetailsConstants {
     static let noProjectsPlaceholder = "No data about projects."
     static let projects = "Projects: "
     static let phonePlaceholder = "No data about a phone number."
+    static let infoInContacts = "Info in Contacts"
     
 }
