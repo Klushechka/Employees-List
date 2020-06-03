@@ -9,7 +9,7 @@
 import Foundation
 
 enum FileName: String {
-    case employees
+    case employees, test
 }
 
 final class DataStorageManager {
@@ -43,7 +43,7 @@ final class DataStorageManager {
         if let data = FileManager.default.contents(atPath: url.path) {
             let decoder = JSONDecoder()
             do {
-                let model = try decoder.decode(T.self, from: data)
+                let model = try decoder.decode(dataType, from: data)
                 return model
             } catch {
                 print("Couldn't retrieve the data \(error)")

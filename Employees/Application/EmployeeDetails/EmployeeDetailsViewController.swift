@@ -116,7 +116,7 @@ private extension EmployeeDetailsViewController {
             guard let self = self else { return }
             
             DispatchQueue.main.sync {
-                self.showDefaultAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
+                self.showDefaultStyleAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
             }
         }
     }

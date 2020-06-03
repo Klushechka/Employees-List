@@ -18,11 +18,18 @@ struct ContactDetails: Codable {
         case email
     }
     
+    init(phone: String?, email: String) {
+        self.phone = phone
+        self.email = email
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.phone = try? container.decodeIfPresent(String.self, forKey: .phone)
-        self.email = try container.decode(String.self, forKey: .email)
+        let phone = try? container.decodeIfPresent(String.self, forKey: .phone)
+        let email = try container.decode(String.self, forKey: .email)
+        
+        self.init(phone: phone, email: email)
     }
     
     func encode(to encoder: Encoder) throws {

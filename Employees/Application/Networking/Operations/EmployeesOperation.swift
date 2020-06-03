@@ -52,7 +52,7 @@ class EmployeesOperation: DataOperation {
             
             let uniqueEmployees = Array(Set(decodedEmployees))
             
-            if uniqueEmployees.count > 0 {
+            if requestSucceeded {
                 sself.saveData(data: uniqueEmployees)
             }
             

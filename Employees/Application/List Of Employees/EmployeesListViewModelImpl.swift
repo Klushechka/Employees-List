@@ -54,16 +54,18 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     var errorOccured: (() -> Void)?
     
     private var employeesOperation: EmployeesOperation?
-    private var networkManager: NetworkingManager?
+    private var networkManager: NetworkManager?
+    private var dataStorageManager: DataStorageManager?
     
     init() {
-        setUpNetworkManager()
+        setUpManagers()
         fetchEmployees()
         fetchLocalContacts()
     }
     
-    private func setUpNetworkManager() {
-        self.networkManager = NetworkingManager()
+    private func setUpManagers() {
+        self.networkManager = NetworkManager()
+        self.dataStorageManager = DataStorageManager()
     }
     
     private func fetchEmployees() {
@@ -76,14 +78,14 @@ final class EmployeeListViewModelImpl: EmployeesListViewModel, LocalContactsView
     }
     
     private func fetchStoredEmployees() -> [Employee]? {
-        guard let networkManager = self.networkManager else { return nil }
+        guard let dataStorageManager = self.dataStorageManager else { return nil }
         
-        return networkManager.retrieveData(fileName: .employees, dataType: [Employee].self)
+        return dataStorageManager.retrieveData(fileName: .employees, dataType: [Employee].self)
     }
     
     func downloadEmployees(completion: (() -> Void)? = nil) {
-        guard let networkManager = self.networkManager else { return }
-        self.employeesOperation = networkManager.createOperation(EmployeesOperation.self) as? EmployeesOperation
+        guard let networkManager = self.networkManager, let dataStorageManager = self.dataStorageManager else { return }
+        self.employeesOperation = networkManager.createOperation(EmployeesOperation.self, dataStorageManager: dataStorageManager) as? EmployeesOperation
         
         guard let employeesOperation = self.employeesOperation, employeesOperation.isReadyToLoadData else { return }
         
@@ -188,15 +190,15 @@ extension EmployeeListViewModelImpl {
 
 extension EmployeeListViewModelImpl {
     
-    func filterEmployeesMatching(text: String?) {
-        guard let text = text, text.count > 0 else {
+    func filterEmployeesMatching(query: String?) {
+        guard let searchQuery = query, searchQuery.count > 0 else {
             return
         }
         guard let employees = self.employees, employees.count > 0 else {
             return
         }
         
-        let lowercasedSearchQuery = text.lowercased()
+        let lowercasedSearchQuery = searchQuery.lowercased()
         
         self.employeesMatchingQuery = employees.filter {
             $0.name.lowercased().range(of: lowercasedSearchQuery) != nil ||

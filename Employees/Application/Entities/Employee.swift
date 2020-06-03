@@ -30,14 +30,24 @@ struct Employee: Codable {
         case projects = "projects"
     }
     
+    init(name: String, surname: String, position: String, contactDetails: ContactDetails, projects: [String]?) {
+        self.name = name
+        self.surname = surname
+        self.position = position
+        self.contactDetails = contactDetails
+        self.projects = projects
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
-        self.name = try container.decode(String.self, forKey: .name)
-        self.surname = try container.decode(String.self, forKey: .surname)
-        self.contactDetails = try container.decode(ContactDetails.self, forKey: .contactDetails)
-        self.position = try container.decode(String.self, forKey: .position)
-        self.projects = try container.decodeIfPresent([String].self, forKey: .projects)
+        let name = try container.decode(String.self, forKey: .name)
+        let surname = try container.decode(String.self, forKey: .surname)
+        let contactDetails = try container.decode(ContactDetails.self, forKey: .contactDetails)
+        let position = try container.decode(String.self, forKey: .position)
+        let projects = try container.decodeIfPresent([String].self, forKey: .projects)
+        
+        self.init(name: name, surname: surname, position: position, contactDetails: contactDetails, projects: projects)
     }
     
     func encode(to encoder: Encoder) throws {

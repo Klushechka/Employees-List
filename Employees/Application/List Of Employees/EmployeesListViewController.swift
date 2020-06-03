@@ -74,7 +74,7 @@ private extension EmployeesListViewController {
             DispatchQueue.main.sync {
                 self.stopSpinnersAnimation()
                 
-                self.showDefaultAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
+                self.showDefaultStyleAlert(title: AlertConstants.errorTitle, message: AlertConstants.generalErrorDescription, buttonLabel: Constants.closeButton)
             }
         }
     }
@@ -169,7 +169,7 @@ private extension EmployeesListViewController {
     @objc func refreshList(_ sender: UIRefreshControl) {
         guard let viewModel = self.viewModel else { return }
         
-        let completion: (() -> Void)? = { viewModel.filterEmployeesMatching(text: self.currentSearchQuery)
+        let completion: (() -> Void)? = { viewModel.filterEmployeesMatching(query: self.currentSearchQuery)
         }
         
         viewModel.downloadEmployees(completion: self.isSearchActive ? completion : nil)
@@ -323,7 +323,7 @@ extension EmployeesListViewController: UISearchBarDelegate, UISearchDisplayDeleg
             self.isSearchActive = true
             self.searchBar.showsCancelButton = true
             
-            viewModel.filterEmployeesMatching(text: searchBar.text)
+            viewModel.filterEmployeesMatching(query: searchBar.text)
         }
     }
     

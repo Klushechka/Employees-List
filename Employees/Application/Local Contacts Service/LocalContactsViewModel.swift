@@ -11,7 +11,6 @@ import Contacts
 
 protocol LocalContactsViewModel {
     var localContactsService: LocalContactsService? { get }
-    
     var localContactsNames: [String]? { get }
     var localContactsListUpdated: (() -> Void)? { get set }
     
